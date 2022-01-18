@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styles from "../styles/Paginado.module.css"
 
 export default function Paginado ({recipesPerPage,  allRecipes, paginado}){
     const pageNumber = []
@@ -10,7 +11,7 @@ export default function Paginado ({recipesPerPage,  allRecipes, paginado}){
 
     return(
         <nav>
-            <ul>
+            <ul className={styles.barra}>
                 {pageNumber &&
                 pageNumber.map(number => (
                     <li className='paginado' key = {number}>

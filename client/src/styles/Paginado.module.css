@@ -1,0 +1,32 @@
+.barra {
+    list-style-type: none;
+    text-align: center;
+    display: inline-flex;
+    border: rgb(185, 74, 74);
+    border-width: 1px;
+    border-color: rgb(17, 17, 17);
+}
+
+.barra li a {
+    color: rgb(165, 39, 39);
+    
+    float: center;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid rgb(0, 0, 0);
+    font-weight: 500;
+    margin: 0 4px;
+    text-align: center;
+}
+
+.barra li a.activo {
+    color: rgb(143, 74, 18);
+    border-radius: 5px;
+}
+
+.barra li a:hover:not(.activo){
+    background-color: gray;
+}
+
+  

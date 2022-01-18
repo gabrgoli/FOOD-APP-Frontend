@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Card from './Card';
 import Paginado from './Paginado';
 import SearchBar from './SearchBar';
+import styles from "../styles/Paginado.module.css"
 
 export default function Home(){
 

@@ -29,7 +29,7 @@ console.log(detailRecipe);
                         <p >{detailRecipe.title}</p> 
                         <h1 >Imagen: </h1>
                         <img src={detailRecipe.imagen} alt="la imagen no se encuentra"/>
-                        <p >{detailRecipe.imagen}</p> 
+                        
                         <h3 >Resumen:</h3>
                         <p >{detailRecipe.resumen}</p>                         
                         <h3 >Puntuacion</h3>
