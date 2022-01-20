@@ -9,12 +9,7 @@ export function getRecipes() {
     });
   };
 }
-export function orderBySpoonacularScore(payload) {
-  return {
-    type: "ORDER_BY_SPOONACULAR_SCORE",
-    payload,
-  };
-}
+
 export function getDiets() {
   return async function (dispatch) {
     // try {
@@ -36,14 +31,14 @@ export function filteredByDiet(payload) {
     payload,
   };
 }
-
+/*
 export function filterRecipeByStatus(payload) {
   //el payload recibe el value de las opciones
   return {
     type: "FILTER_BY_VALUE",
     payload,
   };
-}
+}*/
 
 export function filterCreated(payload) {
   return {
@@ -59,17 +54,26 @@ export function orderByTitle(payload) {
   };
 }
 
+export function orderBySpoonacularScore(payload) {
+  return {
+    type: "ORDER_BY_SPOONACULAR_SCORE",
+    payload,
+  };
+}
+
 export function getTitleRecipes(name) {
   //buscar receta por nombre
   return async function (dispatch) {
     try {
       var json = await axios.get(`http://localhost:3001/recipes?name=${name}`);
+  
       return dispatch({
         type: "SEARCH_RECIPE",
         payload: json.data, //el json.data es lo que devuelve la ruta
       });
     } catch (error) {
       console.log(error);
+      alert("no se encuentra la receta")
     }
   };
 }

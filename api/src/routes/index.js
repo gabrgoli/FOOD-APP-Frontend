@@ -26,74 +26,17 @@ const getApiInfo = async () => {
       puntuacion: el.spoonacularScore,
       nivel: el.healthScore,
       pasoApaso: el.analyzedInstructions[0]?.steps.map((each) => {
-        return each.step;
+        return each.step.concat({number:each.number, step:each.step})
       }),
       imagen: el.image,
       dieta: el.diets.map((e) => ({ name: e })),
       //pasoApaso: el.analyzedInstructions.map(el=>el===steps),
+      createdInDb:false
     };
   });
   return apiInfo;
 };
 
-const searchByIdAtApi = async (id) => {
-  try {
-    const recipe = await axios.get(
-      `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
-    );
-    const detail = recipe.data;
-    return {
-      id: detail.id,
-      title: detail.title,
-      imagen: detail.image,
-      resumen: detail.summary.replace(/<[^>]*>?/g, ""),
-      puntuacion: detail.spoonacularScore,
-      nivel: detail.healthScore,
-      dieta: detail.diets.map((each) => ({ name: each })),
-      pasoApaso: detail.instructions.replace(/<[^>]*>?/g, ""),
-    };
-  } catch {
-    return undefined;
-  }
-};
-
-const searchByIdAtDB = async (id) => {
-  try {
-    const recipe = await Recipe.findByPk(id, {
-      include: {
-        model: TipoDeDieta,
-        attributes: ["name"],
-        through: {
-          attributes: [],
-        }, //ver si la sintaxis esta bien escrita
-      },
-    });
-    return {
-      id: recipe.id,
-      title: recipe.title,
-      imagen: recipe.imagen,
-      resumen: recipe.resumen,
-      puntuacion: recipe.puntuacion,
-      nivel: recipe.nivel,
-      dieta: recipe.TipoDeDieta,
-      pasoApaso: recipe.instructions,
-    };
-  } catch {
-    return undefined;
-  }
-};
-
-const searchById = async (id) => {
-  const apiRecipeProm = searchByIdAtApi(id);
-  const dbRecipeProm = searchByIdAtDB(id);
-
-  const [apiRecipe, dbRecipe] = await Promise.all([
-    apiRecipeProm,
-    dbRecipeProm,
-  ]); // hace las promesas
-
-  return apiRecipe || dbRecipe;
-};
 
 const getDataBaseInfo = async () => {
   const recipes = await Recipe.findAll({
@@ -127,9 +70,69 @@ const getAllRecipes = async () => {
   const infoTotal = apiInfo.concat(dbInfo);
   //console.log(infoTotal);
   return infoTotal;
-  // const dbInfo = await getDataBaseInfo();
-  // return dbInfo;
+
 };
+
+const searchByIdAtApi = async (id) => {
+  try {
+    const recipe = await axios.get(
+      `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
+    );
+    const detail = recipe.data;
+    return {
+      id: detail.id,
+      title: detail.title,
+      imagen: detail.image,
+      resumen: detail.summary.replace(/<[^>]*>?/g, ""),
+      puntuacion: detail.spoonacularScore,
+      nivel: detail.healthScore,
+      dieta: detail.diets.map((each) => ({ name: each })),
+      pasoApaso: detail.instructions.replace(/<[^>]*>?/g, ""),
+    };
+  } catch {
+    return undefined;
+  }
+};
+
+const searchByIdAtDB = async (id) => {
+  try {
+    const recipe = await Recipe.findByPk(id, {
+      include: {
+        model: TipoDeDieta,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        }, 
+      },
+    });
+    return {
+      id: recipe.id,
+      title: recipe.title,
+      imagen: recipe.imagen,
+      resumen: recipe.resumen,
+      puntuacion: recipe.puntuacion,
+      nivel: recipe.nivel,
+      dieta: recipe.TipoDeDieta,
+      pasoApaso: recipe.instructions,
+    };
+  } catch {
+    return undefined;
+  }
+};
+
+const searchById = async (id) => {
+  const apiRecipeProm = searchByIdAtApi(id);
+  const dbRecipeProm = searchByIdAtDB(id);
+
+  const [apiRecipe, dbRecipe] = await Promise.all([
+    apiRecipeProm,
+    dbRecipeProm,
+  ]); // hace las promesas
+
+  return apiRecipe || dbRecipe;
+};
+
+
 
 /*[ ] GET /recipes?name="...":
 Obtener un listado de las recetas que contengan la palabra ingresada como query parameter
@@ -145,8 +148,9 @@ router.get("/recipes", async (req, res) => {
       el.title.toLowerCase().includes(name.toLowerCase())
     ); // el segundo name es el que llega por query
     recipeName.length
-      ? res.status(200).send(recipeName)
-      : res.status(404).send("no esta la receta, sory men");
+      ?res.status(200).send(recipeName)
+     // :res.alert("the requested page not found");
+      :res.status(404).send("no esta la receta");
   } else {
     res.status(200).send(recipeTotal); //si no hay un name no entra al if y muestra todas las recetas
   }
@@ -209,7 +213,7 @@ router.get("/types", async (req, res) => {
       { name: "pescatarian" },
     ];
     res.send(dat);*/
-    res.send(types);
+    //res.send(types);
   } catch (error) {
     console.log(error);
   }
@@ -234,7 +238,8 @@ router.post("/recipe", async (req, res, next) => {
     dieta,
     createdInDb,
   } = req.body;
-  let recipeCreated = await Recipe.create({
+
+  let recipeCreated = await Recipe.create({ //no le paso tipo de dieta porque se hace la relacion aparte
     title,
     resumen,
     puntuacion,
@@ -248,15 +253,15 @@ router.post("/recipe", async (req, res, next) => {
     TipoDeDieta.findOrCreate({ where: { name: tipoDieta } });
   });
 
-  let dietaDb = await TipoDeDieta.findAll({ where: { name: dieta } });
-  // CORREGIR PARA UQE TRAIGA TODAS LAS  DIETAS
+  let dietaDb = await TipoDeDieta.findAll({ where: { name: dieta } });//dieta llega por body
+
   dietaDb.map((unaDietaDb) => {
-    recipeCreated.addTipoDeDieta(unaDietaDb);
+    recipeCreated.addTipoDeDieta(unaDietaDb); //agregale tipo de dieta que coinciden con el nombre de dieta
   });
 
   res.send("receta cargada con exito");
 });
-
+/*
 router.post("/create", async (req, res, next) => {
   try {
     const {
@@ -286,7 +291,7 @@ router.post("/create", async (req, res, next) => {
     next(error);
   }
 });
-
+*/
 module.exports = router;
 
 

@@ -1,7 +1,9 @@
 const initialState = {
   recipes: [],
   allRecipes: [],
+  copyRecipes: [],
   typeOfDiets: [],
+  alerta:[]
 };
 
 function rootReducer(state = initialState, action) {
@@ -10,43 +12,45 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         recipes: action.payload,
-        allRecipes: action.payload, //llena 2 estados con todos los personajes
+        allRecipes: action.payload, //llena estados con todos los personajes
+        copyRecipes: action.payload
       };
 
     case "FILTER_CREATED": //muestra los creados por mi o los existentes en la base de datos
-      const createdFilter =
-        action.payload === "created"
+    const createdFilter = action.payload === "created"
           ? state.allRecipes.filter((el) => el.createdInDb)
-          : state.allRecipes.filter((el) => !el.createdInDb);
+          //: state.copyRecipes.filter((el) => !el.createdInDb);
+          : state.allRecipes;
       return {
         ...state,
         recipes: action.payload === "All" ? state.allRecipes : createdFilter,
+        //recipes: action.payload === "created" ? createdFilter : state.allRecipes,
+        //recipes: createdFilter,
       };
+
     case "FILTERED_BY_DIETS":
       const allRecipes = state.allRecipes;
-      const dietFiltered =
-        action.payload === "all"
-          ? allRecipes
-          : allRecipes.filter((el) => 
+      const dietFiltered = action.payload === "all"? 
+      allRecipes
+      : allRecipes.filter((el) => 
 
-           el.dieta.includes(action.apyload)||
+           //el.dieta.includes(action.apyload)|| 
            el.dieta.map((e)=> e.name).includes(action.payload)   
-             /*
-              let diet = recipe.diets.map((d) => d.name);
-              if (diet.includes(action.payload)) {
-                return allRecipes;
-              }*/
 
             );
       return {
         ...state,
         recipes: dietFiltered,
       };
+
     case "SEARCH_RECIPE":
-      return {
-        ...state,
-        recipes: action.payload,
-      };
+
+        return {
+          ...state,
+          recipes: action.payload,
+        };
+      
+    
 
     case "POST_RECIPE":
       return {

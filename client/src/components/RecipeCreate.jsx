@@ -6,11 +6,11 @@ import { useDispatch , useSelector } from "react-redux"
 
 function validate(post){
     let errors = {}
-    if (!post.title){
+    if (!post.title){ //si no hay nada
         errors.title = "Tu receta necesita un titulo"
-    } else if (!post.summary){
+    } else if (!post.summary){ //si no hay nada
         errors.summary = "Brinda una pequeña descripcion de tu receta"
-    } else if (!post.instructions){
+    } else if (!post.instructions){ //si no hay nada
         errors.instructions = "No te olvides de contar como la preparaste"
     }
     return errors
@@ -22,7 +22,7 @@ export default function RecipeCreate(){
     const navigate = useNavigate()
     const allDiets = useSelector((state) => state.diets)
    
-    const [errors, setErrors] = useState({})
+    const [errors, setErrors] = useState({}) //estado local para manejar errores
 
     const [post, setPost] = useState({
         title: "",
@@ -35,9 +35,9 @@ export default function RecipeCreate(){
     })
 
     function handleChange(e){
-        setPost({
+        setPost({ //a mendida que escribo setea y va guardando
             ...post,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value //va llenando el estado post a medida que va modificando
         })
         setErrors(validate({
             ...post,
@@ -50,7 +50,7 @@ export default function RecipeCreate(){
             ...post,
             diets: [...post.diets, e.target.value] //guarda en un arreglo lo qe vaya seleccionando
         })
-    //    console.log(post)
+
     }
 
     function handleDietDelete(deleteThis){
@@ -61,7 +61,7 @@ export default function RecipeCreate(){
     }
 
     function handleSubmit(e){
-        if(!post.title && !post.summary){
+        if(!post.title || !post.summary){
             e.preventDefault()
             return alert("La receta necesita un titulo y un resumen")
         } else if(!post.diets.length){
@@ -82,7 +82,7 @@ export default function RecipeCreate(){
             }
             dispatch(postRecipe(newPost))
             alert("Se creo la receta exitosamente!")
-            setPost({
+            /*setPost({
                 title: "",
                 summary: "",
                 spoonacularScore: 50,
@@ -90,7 +90,7 @@ export default function RecipeCreate(){
                 instructions: "",
                 image: "",
                 diets: []
-            })
+            })*/
             navigate("/home")
         }
     }

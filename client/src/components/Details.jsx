@@ -10,11 +10,13 @@ export default function DetailRecipe(){
     
     const dispatch = useDispatch()
     const recipeId = useParams()
-    const detailRecipe = useSelector((state) => state.detail) 
+    const detailRecipe = useSelector((state) => state.detail) //traigo del reducer
+
     useEffect(() => {
-        dispatch(getDetail(recipeId.id))
+        dispatch(getDetail(recipeId.id))// recipe.Id accedo al id del detalle
     },[dispatch])
-console.log(detailRecipe);
+//console.log(detailRecipe);
+
     return (
         <div >
             <div>
@@ -28,7 +30,7 @@ console.log(detailRecipe);
                         <h1 >Titulo: </h1>
                         <p >{detailRecipe.title}</p> 
                         <h1 >Imagen: </h1>
-                        <img src={detailRecipe.imagen} alt="la imagen no se encuentra"/>
+                        <img width = "350px" height="250px" src={detailRecipe.imagen} alt="la imagen no se encuentra"/>
                         
                         <h3 >Resumen:</h3>
                         <p >{detailRecipe.resumen}</p>                         
