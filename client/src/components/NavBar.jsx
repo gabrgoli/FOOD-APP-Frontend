@@ -50,15 +50,21 @@ export default function PrimarySearchAppBar() {
   return (
     <Box sx={{ zIndex: 'tooltip'}} position="fixed" width='100%' >
       <AppBar sx={{bgcolor:'#4661A8'}} >
-        <Box display='flex' flexDirection='row' justifyContent='center' alignItems='center'>
-            <Box display='flex' justifyContent='center'>
-                <h1 contenteditable data-heading="Piece of Cake">Foods app</h1>
+        <Box display='flex'  flexDirection='row'  alignItems='center'>
+            <Box width='100%' display='flex' justifyContent='center'>
+                <Link to="/home" ><h1 contenteditable data-heading="Piece of Cake">Foods app</h1></Link>
             </Box>
-            <Box display='flex' justifyContent='flex-end'>
-                <Link to = '/recipe'><button className='botoninicio'>Crear Receta</button></Link> 
+            <Box width='100%'>
+                <SearchBar/>
+            </Box>
+    
+            <Box width='100%' sx={{display:'flex',justifyContent:'right'}} >
+                {window.location.pathname==='/home' ?
+                <Link to = '/recipe'><button className='botoninicio'>Crear Receta</button></Link>
+                :   
+                <Link to="/home" > <button className='botoninicio' >Home</button></Link>}
             </Box>
         </Box>
-        <SearchBar/>
       </AppBar>
     </Box>
   );

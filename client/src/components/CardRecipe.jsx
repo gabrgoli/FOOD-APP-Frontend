@@ -16,7 +16,8 @@ import Typography from '@mui/material/Typography';
 
 export default function CardRecipe({ image , title , diets,score, recipeId }){
   const [colorHeart, setColorHeart] = React.useState ('black');
-  
+
+
   const changeColor = () => { 
     if(colorHeart==="black"){setColorHeart("red")}
     else{ setColorHeart("black")} 

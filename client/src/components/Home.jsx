@@ -11,7 +11,7 @@ import '../styles/Buttons.css';
 import NavBar from '../components/NavBar'
 
 //import styles from "../styles/Paginado.module.css"
-
+console.log('url de ahora' ,window.location)
 export default function Home(){
 
     const dispatch = useDispatch()
@@ -79,31 +79,33 @@ export default function Home(){
     return(//se pasan los values iguales a la API
         <div>
             <NavBar />
-            <Box marginTop='250px'>
-            </Box><h1 marginTop='400px' contenteditable data-heading="Piece of Cake">Busca tu receta favorita</h1>
+            <Box marginTop='250px'/>
+            <h1 marginTop='400px' contenteditable data-heading="Piece of Cake">Busca tu receta favorita</h1>
             
             <button  className='botoninicio' onClick={e=>{handleClick(e)}}>
                 Recargar
             </button>
 
+            
+
             <div>
                 <select className="select-css" onChange={(e) => handleSortedRecipesTitle(e)}>
-                    <option value="" >Ordenar</option>
+                    <option value="" >Ordenar Alfabéticamente</option>
                     <option value='asc'>Ascendente</option> 
                     <option vale='desc'>Descendente</option>
                 </select>
                 <select className="select-css" onChange={e=>handleSortedRecipesSpoonScore(e)}>
-                    <option value="" >Puntaje</option>
+                    <option value="" >Ordenar por Puntaje</option>
                     <option value="SpoonacularMax">Máximo</option>
                     <option value="SpoonacularMin">Mínimo</option>
                 </select>  
                 <select className="select-css" onChange={e=>handleFilterCreated(e)}>
-                    <option value='All'>Todos</option>
-                    <option value='created'>Creados</option>
-                    <option value='api'>Existente</option>
+                    <option value='All'>Ver Todas las Recetas o solo las creadas</option>
+                    <option value='created'>Recetas Creaas</option>
+                    <option value='api'>Todas las Recetas</option>
                 </select>
                 <select className="select-css"  onChange={e => handleFilteredDiet(e)}>
-                    <option value="all">Seleccionar Dietas</option>
+                    <option value="all">Filtrar por dieta</option>
                     {allDiets?.map(diet => {
                         return ( <option value={diet.name}>{diet.name}</option>)
                     })
@@ -116,6 +118,7 @@ export default function Home(){
                     recipesPerPage={recipesPerPage}
                     allRecipes={allRecipes.length}
                     paginado = {paginado}
+                    currentPage={currentPage}
                     />
 
                 <div >
@@ -138,7 +141,7 @@ export default function Home(){
                 </div>
              
                     <div  >
-                        <Paginado recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} paginado={paginado}></Paginado>
+                        <Paginado recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} paginado={paginado} currentPage={currentPage}></Paginado>
                     </div>  
              
 

@@ -3,7 +3,8 @@ const initialState = {
   allRecipes: [],
   copyRecipes: [],
   typeOfDiets: [],
-  alerta:[]
+  alerta:[],
+  detail:[]
 };
 
 function rootReducer(state = initialState, action) {

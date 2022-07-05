@@ -189,7 +189,7 @@ router.get("/types", async (req, res) => {
     );
     types.forEach((e) => {
       TipoDeDieta.findOrCreate({
-        where: { name: e },
+        where: { name: e[0].toUpperCase()+e.substring(1) },
       });
     });
     const allresults = await TipoDeDieta.findAll({
