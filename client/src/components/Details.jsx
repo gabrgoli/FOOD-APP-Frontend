@@ -15,12 +15,13 @@ export default function DetailRecipe(){
     useEffect(() => {
         dispatch(getDetail(recipeId.id))// recipe.Id accedo al id del detalle
     },[dispatch])
+
 //console.log(detailRecipe);
 
     return (
         <div >
             <div>
-            {
+            {recipeId&&
                 ((!detailRecipe)||(detailRecipe.length === 0)) ? 
                     <div >
                         <p >Loading ...</p>

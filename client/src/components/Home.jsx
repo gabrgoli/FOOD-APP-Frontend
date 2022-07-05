@@ -3,9 +3,13 @@ import { useState,useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { getRecipes,filterCreated,getDiets ,filteredByDiet, orderByTitle,orderBySpoonacularScore} from '../actions';
 import { Link } from 'react-router-dom';
-import Card from './Card';
+import CardRecipe from './CardRecipe';
 import Paginado from './Paginado';
 import SearchBar from './SearchBar';
+import { Grid,CardMedia, Box, Typography, Divider } from '@mui/material'
+import '../styles/Buttons.css';
+import NavBar from '../components/NavBar'
+
 //import styles from "../styles/Paginado.module.css"
 
 export default function Home(){
@@ -16,7 +20,7 @@ export default function Home(){
 
     //PAGINADO
     const [currentPage,setCurrentPage]=useState(1) //creo un estado local en donde le paso la pagina actual
-    const [recipesPerPage, setRecipesPerPage]=useState(9) //cantidad de recetas por pagina
+    const [recipesPerPage, setRecipesPerPage]=useState(28) //cantidad de recetas por pagina
     const indexOfLastRecipe = currentPage * recipesPerPage //porque si estoy en la pagina 3, el ultimo recipe va a ser 6*3=18
     const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage //da el index de la primera receta
     const currentRecipes = allRecipes.slice(indexOfFirstRecipe,indexOfLastRecipe) //va mostrando cuantos recipes hay que rednerizar por pagina
@@ -31,7 +35,8 @@ export default function Home(){
     }
 
     useEffect(()=>{
-        dispatch(getRecipes());
+        allRecipes&&dispatch(getRecipes());
+        console.log("se hizo el dispatch")
     },[dispatch])
 
     useEffect(() => {
@@ -73,30 +78,31 @@ export default function Home(){
 
     return(//se pasan los values iguales a la API
         <div>
-            <Link to = '/recipe'>Crear Receta</Link>
-            <h1>aguante las recetas loco</h1>
-
-            <button onClick={e=>{handleClick(e)}}>
-                volver a cargar las recetas
+            <NavBar />
+            <Box marginTop='250px'>
+            </Box><h1 marginTop='400px' contenteditable data-heading="Piece of Cake">Busca tu receta favorita</h1>
+            
+            <button  className='botoninicio' onClick={e=>{handleClick(e)}}>
+                Recargar
             </button>
 
             <div>
-                <select onChange={(e) => handleSortedRecipesTitle(e)}>
-                    <option value="" >Select Order</option>
+                <select className="select-css" onChange={(e) => handleSortedRecipesTitle(e)}>
+                    <option value="" >Ordenar</option>
                     <option value='asc'>Ascendente</option> 
                     <option vale='desc'>Descendente</option>
                 </select>
-                <select onChange={e=>handleSortedRecipesSpoonScore(e)}>
-                    <option value="" >Select Score</option>
-                    <option value="SpoonacularMax">Max Spoonacular Score</option>
-                    <option value="SpoonacularMin">Min Spoonacular Score</option>
+                <select className="select-css" onChange={e=>handleSortedRecipesSpoonScore(e)}>
+                    <option value="" >Puntaje</option>
+                    <option value="SpoonacularMax">Máximo</option>
+                    <option value="SpoonacularMin">Mínimo</option>
                 </select>  
-                <select onChange={e=>handleFilterCreated(e)}>
+                <select className="select-css" onChange={e=>handleFilterCreated(e)}>
                     <option value='All'>Todos</option>
                     <option value='created'>Creados</option>
                     <option value='api'>Existente</option>
                 </select>
-                <select  onChange={e => handleFilteredDiet(e)}>
+                <select className="select-css"  onChange={e => handleFilteredDiet(e)}>
                     <option value="all">Seleccionar Dietas</option>
                     {allDiets?.map(diet => {
                         return ( <option value={diet.name}>{diet.name}</option>)
@@ -105,34 +111,37 @@ export default function Home(){
                 </select>
 
 
-                <Paginado
-                key={paginado}
-                recipesPerPage={recipesPerPage}
-                allRecipes={allRecipes.length}
-                paginado = {paginado}
-                />
-
-                <SearchBar
-                />
+                    <Paginado
+                    key={paginado}
+                    recipesPerPage={recipesPerPage}
+                    allRecipes={allRecipes.length}
+                    paginado = {paginado}
+                    />
 
                 <div >
                 {console.log(currentRecipes)}
+
+                <Grid container   sx={{display:{md:'flex'},justifyContent:{xs:'space-around',md:'flex-start'},mt:2}}> 
                 {
-                
                 currentRecipes?.map(recipe => {
                     return (
-                        <Link to = {'/recipe/'+recipe.id}>
-                        <Card image={recipe.imagen} title={recipe.title} diets={recipe.dieta.map(r => <p>{r.name}</p>)} key={recipe.id} score={recipe.puntuacion} ></Card>
-                        </Link>
+     
+                        <Grid key={recipe._id} md={3} sx={{display:'flex',justifyContent:'center'}}>          
+                                <CardRecipe key={recipe.id} image={recipe.imagen} title={recipe.title} diets={recipe.dieta.map(r => <p>{r.name}</p>)} score={recipe.puntuacion} recipeId={recipe.id}></CardRecipe>
+                        </Grid>
+      
                         )
                     })
                 }
+                </Grid>
                 
                 </div>
+             
+                    <div  >
+                        <Paginado recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} paginado={paginado}></Paginado>
+                    </div>  
+             
 
-                <div  >
-                <Paginado recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} paginado={paginado}></Paginado>
-                </div>  
             </div>
         </div>
 

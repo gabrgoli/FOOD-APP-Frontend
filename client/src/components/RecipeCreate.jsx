@@ -3,6 +3,7 @@ import { Link ,  useNavigate } from "react-router-dom"
 import { postRecipe } from "../actions"
 import { useDispatch , useSelector } from "react-redux"
 //import styles from "../Styles/CreateRecipe.module.css"
+import '../styles/Buttons.css';
 
 function validate(post){
     let errors = {}

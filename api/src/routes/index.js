@@ -147,9 +147,7 @@ router.get("/recipes", async (req, res) => {
     let recipeName = await recipeTotal.filter((el) =>
       el.title.toLowerCase().includes(name.toLowerCase())
     ); // el segundo name es el que llega por query
-    recipeName.length
-      ?res.status(200).send(recipeName)
-     // :res.alert("the requested page not found");
+    recipeName.length?res.status(200).send(recipeName)
       :res.status(404).send("no esta la receta");
   } else {
     res.status(200).send(recipeTotal); //si no hay un name no entra al if y muestra todas las recetas
