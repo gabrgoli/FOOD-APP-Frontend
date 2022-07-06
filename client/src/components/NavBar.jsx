@@ -58,7 +58,7 @@ export default function PrimarySearchAppBar() {
                 <SearchBar/>
             </Box>
     
-            <Box width='100%' sx={{display:'flex',justifyContent:'right'}} >
+            <Box width='100%' sx={{display:'flex',justifyContent:'right',alignItems:'center'}} >
                 {window.location.pathname==='/home' ?
                 <Link to = '/recipe'><button className='botoninicio'>Crear Receta</button></Link>
                 :   

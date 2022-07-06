@@ -7,12 +7,14 @@ import '../styles/Buttons.css';
 import SearchIcon from '@mui/icons-material/Search';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-
+import {useLocation, useNavigate } from 'react-router-dom';
 
 export default function SearchBar (){
     const dispatch = useDispatch()
     const [name,setName]=useState("")
     const alerta = useSelector((state) => state.alerta)
+    const location=useLocation()
+    const navigate=useNavigate()
 
     function handleInputChange (e){
         e.preventDefault()
@@ -37,6 +39,7 @@ export default function SearchBar (){
         
         
         dispatch(getTitleRecipes(name))
+        if(location!=='/home')navigate('/home')
         document.getElementById('id1').value='' ; 
         document.getElementById('id1').placeholder='Buscar....' ;
 

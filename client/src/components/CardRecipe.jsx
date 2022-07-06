@@ -12,21 +12,19 @@ import Typography from '@mui/material/Typography';
 //import { red } from '@mui/material/colors';
  import FavoriteIcon from '@mui/icons-material/Favorite';
  import { Link } from 'react-router-dom';
+ import { Grid, Box, Divider } from '@mui/material'
+import IconsRecipes from '../components/IconsRecipes'
 
 
 export default function CardRecipe({ image , title , diets,score, recipeId }){
   const [colorHeart, setColorHeart] = React.useState ('black');
-
-
   const changeColor = () => { 
     if(colorHeart==="black"){setColorHeart("red")}
     else{ setColorHeart("black")} 
   }
 
-    return (
-
-
-<div class="card" >
+  return (
+  <div class="card" >
         <Card sx={{ backgroundColor:'#D3CBC9', width: 300, height: 550, margin:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px', border:'4px solid rgb(1,40,83)' }}>
         <Link to = {'/recipe/'+recipeId}>
 
@@ -38,14 +36,20 @@ export default function CardRecipe({ image , title , diets,score, recipeId }){
               sx={{objectFit:'contain',marginTop:'10px', }}
 
             />
-            <Typography fontSize='20px'>{title}</Typography>
+            <Box display='flex' flexDirection='row' justifyContent='center'>{diets}</Box>
+            {
+              diets.map((diet)=>(
+                <IconsRecipes title={diet.name}/>
+              ))
+            }
+            
+            <Typography color='black' fontSize='20px'>{title}</Typography>
           </Link>
             <CardContent>
-            <Typography >{score}</Typography>
-                <Typography >{diets}</Typography>
+            
                 
             </CardContent>
-         <CardActions sx={{justifyContent:'flex-end'}}>
+         <CardActions sx={{display:'flex', justifyContent:'flex-end'}}>
           <IconButton   onClick={ changeColor } style={{color: colorHeart}}>
             <FavoriteIcon />
           </IconButton>

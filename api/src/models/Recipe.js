@@ -31,9 +31,10 @@ module.exports = (sequelize) => {
     },
     nivel: {
       type: DataTypes.STRING,
+      allowNull:false
     },
     pasoApaso: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     imagen:{
       type: DataTypes.STRING(12345),

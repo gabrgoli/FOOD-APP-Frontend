@@ -35,7 +35,7 @@ export default function Home(){
     }
 
     useEffect(()=>{
-        allRecipes&&dispatch(getRecipes());
+        (allRecipes.length===0)&&dispatch(getRecipes());
         console.log("se hizo el dispatch")
     },[dispatch])
 
@@ -80,7 +80,7 @@ export default function Home(){
         <div>
             <NavBar />
             <Box marginTop='250px'/>
-            <h1 marginTop='400px' contenteditable data-heading="Piece of Cake">Busca tu receta favorita</h1>
+            <h1 marginTop='400px' contentEditable data-heading="Piece of Cake">Busca tu receta favorita</h1>
             
             <button  className='botoninicio' onClick={e=>{handleClick(e)}}>
                 Recargar
@@ -105,7 +105,7 @@ export default function Home(){
                     <option value='api'>Todas las Recetas</option>
                 </select>
                 <select className="select-css"  onChange={e => handleFilteredDiet(e)}>
-                    <option value="all">Filtrar por dieta</option>
+                    <option value="all">Filtrar por tipo de dieta</option>
                     {allDiets?.map(diet => {
                         return ( <option value={diet.name}>{diet.name}</option>)
                     })

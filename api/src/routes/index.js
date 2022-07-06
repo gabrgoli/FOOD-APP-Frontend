@@ -16,7 +16,7 @@ const router = Router();
 
 const getApiInfo = async () => {
   const apiUrl = await axios.get(
-    `https://api.spoonacular.com/recipes/complexSearch?number=5000&addRecipeInformation=true&diet&apiKey=${API_KEY}`
+    `https://api.spoonacular.com/recipes/complexSearch?number=500&addRecipeInformation=true&diet&apiKey=${API_KEY}`
   );
   const apiInfo = await apiUrl.data.results.map((el) => {
     return {
@@ -33,6 +33,9 @@ const getApiInfo = async () => {
       //pasoApaso: el.analyzedInstructions.map(el=>el===steps),
       createdInDb:false
     };
+
+
+
   });
   return apiInfo;
 };
@@ -135,21 +138,32 @@ const searchById = async (id) => {
 
 
 /*[ ] GET /recipes?name="...":
-Obtener un listado de las recetas que contengan la palabra ingresada como query parameter
-Si no existe ninguna receta mostrar un mensaje adecuado
+Buscar Receta por nombre que lleva a traves de query O TRAE TODAS las recetas
 */
 
 router.get("/recipes", async (req, res) => {
   const name = req.query.name; //
   let recipeTotal = await getAllRecipes();
   if (name) {
-    // si hay un nombre que me pasan por query, solo me muestra el del nombre
-    let recipeName = await recipeTotal.filter((el) =>
-      el.title.toLowerCase().includes(name.toLowerCase())
-    ); // el segundo name es el que llega por query
-    recipeName.length?res.status(200).send(recipeName)
-      :res.status(404).send("no esta la receta");
+    let recipeName = await recipeTotal.filter((el) =>el.title.toLowerCase().includes(name.toLowerCase())); 
+    
+    recipeName.length?
+      res.status(200).send(recipeName)
+    :
+      res.status(404).send("no esta la receta");
   } else {
+    //console.log('todas la recetas',recipeTotal)
+   /* recipeTotal?.map((recipe) => {
+      Recipe.findOrCreate({ where: { 
+        title: recipe.title,
+        resumen: recipe.resumen,
+        //nivel: recipe.nivel        
+        //pasoApaso: recipe.pasoApaso,
+        //imagen: recipe?.imagen
+        //createdInDb: false
+      } });
+    });*/
+
     res.status(200).send(recipeTotal); //si no hay un name no entra al if y muestra todas las recetas
   }
 });
@@ -226,6 +240,7 @@ Crea una receta en la base de datos
 /* */
 
 router.post("/recipe", async (req, res, next) => {
+  //traigo los datos de la ereceta que vienen por body
   const {
     title,
     resumen,
@@ -237,6 +252,7 @@ router.post("/recipe", async (req, res, next) => {
     createdInDb,
   } = req.body;
 
+  //Cargo una variable con los datos de la receta
   let recipeCreated = await Recipe.create({ //no le paso tipo de dieta porque se hace la relacion aparte
     title,
     resumen,
@@ -246,50 +262,21 @@ router.post("/recipe", async (req, res, next) => {
     imagen,
     createdInDb,
   });
-
+  //Guarda las diestas de la API en la BDD
   dieta.map((tipoDieta) => {
     TipoDeDieta.findOrCreate({ where: { name: tipoDieta } });
   });
 
+  //traigo todas las  dietas de la BDD
   let dietaDb = await TipoDeDieta.findAll({ where: { name: dieta } });//dieta llega por body
-
+  
   dietaDb.map((unaDietaDb) => {
     recipeCreated.addTipoDeDieta(unaDietaDb); //agregale tipo de dieta que coinciden con el nombre de dieta
   });
 
   res.send("receta cargada con exito");
 });
-/*
-router.post("/create", async (req, res, next) => {
-  try {
-    const {
-      title,
-      summary,
-      spoonacularScore,
-      healthScore,
-      instructions,
-      image,
-      diets,
-    } = req.body;
 
-    const recipeCreate = await Recipe.create({
-      title,
-      resumen,
-      puntuacion,
-      nivel,
-      pasoApaso,
-      imagen,
-    });
-
-    const proms = diets.map((diet) => recipeCreate.addDiet(diet));
-    await Promise.all(proms);
-
-    res.status(200).send({ msg: "Recipe successfully created" });
-  } catch (error) {
-    next(error);
-  }
-});
-*/
 module.exports = router;
 
 

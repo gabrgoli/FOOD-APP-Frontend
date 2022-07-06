@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link ,  useNavigate } from "react-router-dom"
-import { postRecipe } from "../actions"
+import { postRecipe,getDiets } from "../actions"
 import { useDispatch , useSelector } from "react-redux"
 //import styles from "../Styles/CreateRecipe.module.css"
 import '../styles/Buttons.css';
@@ -29,6 +29,8 @@ function validate(post){
     
 export default function RecipeCreate(){
 
+
+
     const fileInputRef=useRef(null)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -46,6 +48,11 @@ export default function RecipeCreate(){
         imagen:"",
         dieta: []  
     })
+    useEffect(() => {
+        dispatch(getDiets())
+    },[dispatch])
+
+
 
     const handleUploadPicture=  (e)=>{
       const pics = e.target.files;
@@ -97,10 +104,11 @@ export default function RecipeCreate(){
       ))
       }
 
-    function handleDietDelete(deleteThis){
+    function handleDietDelete(e,deleteThis){
+        e.preventDefault()
         setPost({
             ...post,
-            diets: post.diets.filter(diet => diet !== deleteThis)
+            dieta: post.dieta.filter(diet => diet !== deleteThis)
         })
     }
 
@@ -124,33 +132,36 @@ export default function RecipeCreate(){
 
 
     return(
-        <div >
-
+        
+    <Box display='fllex' justifyContent='center'  marginTop='250px'>
             <NavBar />
-            <Box marginTop='250px'/>
+            
+            <Box marginTop='200px' mb='100px' sx={{boxShadow:'rgba(0, 0, 0, 0.35) 0px 5px 15px;',display:'flex',justifyContent:'center',flexDirection:{xs:'column',md:'column'}, width:'70%',borderRadius:3,alignItems:'center'}}>
             <h1 >CREA TU PROPIA RECETA</h1>
             <form >
-                <div >
-                    <TextField id="formtitle" label="Titulo" variant="outlined" name='title' value={post.title} onChange={(e)=>handleChange(e)} ></TextField>
+                <Box >
+                    <TextField id="formtitle2" label="Titulo" name='title' value={post.title} onChange={(e)=>handleChange(e)} ></TextField>
                     {errors.title && (<p >{errors.title}</p>)}
-                </div>
+                </Box>
+                <label ><h1>Resumen</h1></label>
                 <div >
-                    <TextField multiline rows={5} id="formSummary" label="Resumen" variant="outlined" name='resumen' value={post.resumen} onChange={(e)=>handleChange(e)} ></TextField>
+                    <textarea rows="10" cols="50" type="text" label="Resumen" variant="outlined" name='resumen' value={post.resumen} onChange={(e)=>handleChange(e)} ></textarea>
                     {errors.resumen && (<p >{errors.resumen}</p>)}
                 </div>
-                <div >
+                {/* <div >
                     <label >Puntuacion</label>
                     <input  type="range" min="0" max="100" value={post.puntuacion} name="puntuacion" onChange={(e) => handleChange(e)}></input>
                     {<p >{post.puntuacion}</p>}
-                </div>
+                </div> */}
                 <div >
-                    <label >Nivel</label>
+                    <label ><h1>Puntaje de Salud</h1></label>
                     <input  type="range" min="0" max="100" value={post.nivel} name="nivel" onChange={(e) => handleChange(e)}></input>
-                    {<p >{post.nivel}</p>}
+                    {<h1 >{post.nivel}</h1>}
                 </div>
+               
+                    <label ><h1>Preparacion</h1></label>
                 <div >
-                    <label >Paso a paso</label>
-                    <textarea  type="text" value={post.pasoApaso} name="pasoApaso" onChange={(e) => handleChange(e)}></textarea>
+                    <textarea rows="10" cols="50"  type="text" value={post.pasoApaso} name="pasoApaso" onChange={(e) => handleChange(e)}></textarea>
                     {errors.pasoApaso && (<p >{errors.pasoApaso}</p>)}
                 </div>
                 {/* <div >
@@ -182,7 +193,7 @@ export default function RecipeCreate(){
 
 
 
-
+              {/*///////////////////////////////////////////// DONDE SE SUBE LA FOTO///////////////////////////////////////////// */}
               <Container display='flex' flexDirection='row' justifyContent='center' width={10}  >
                 {images[0]?
                 images.map(image=>(
@@ -206,11 +217,13 @@ export default function RecipeCreate(){
               </Container>
               {upLoading && <p>Subiendo Foto...</p> }
 
+
+            {/*//////////////////////////////////////////////////// CANTIDAD DE FOTOS/////////////////////////////////////////// */}
             <Box sx={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
               <Typography display='flex' justifyContent='center'>subiste {images.length} fotos</Typography>
             </Box>   
 
-
+                {/*/////////////////////////////////////////////// SELECCIONAR LAS DIETAS //////////////////////////////////////////////////////*/}        
                 <div >
                     <select onChange={(e)=> handleSelect(e)}>
                         <option value="all" hidden name="diets" >Selecciona tipo de dieta</option>
@@ -219,20 +232,24 @@ export default function RecipeCreate(){
                             })
                             } 
                     </select>
+
+                    {/*/////////////////////////////////////////////// ELIMINAR UNA DIETA //////////////////////////////////////////////////////*/}
                     <ul>
-                        <li>                            
                             {post.dieta.map(diet => 
                             <div >
                                 <p>{diet}</p>
-                                <button onClick={() => handleDietDelete(diet)}>x </button>
+                                <button onClick={(e) => handleDietDelete(e,diet)}>x </button>
                             </div>
                             )}
-                        </li>
                     </ul>
                 </div>
+                 {/*/////////////////////////////////////////////// BOTON DE CREAR RECETA //////////////////////////////////////////////////////*/}
                 <button  type="submit" onClick={(e) => handleSubmit(e)}>Crear Receta</button>
+           
             </form>
-        </div>
+            </Box>
+        </Box>
+        
     )
 
 

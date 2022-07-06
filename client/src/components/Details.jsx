@@ -7,7 +7,7 @@ import { getDetail } from "../actions";
 import { Grid,CardMedia, Box, Typography, Divider } from '@mui/material'
 import '../styles/Buttons.css';
 import NavBar from '../components/NavBar'
-
+import IconsRecipes from "./IconsRecipes";
 export default function DetailRecipe(){
     
     const dispatch = useDispatch()
@@ -38,6 +38,9 @@ console.log(detailRecipe);
                         <Box display='flex' flexDirection='row'>
                           {detailRecipe?.dieta?.map(r => (<Box display='flex' flexDirection='row' >{' -'+r.name[0].toUpperCase()+r.name.substring(1)} </Box>))}
                         </Box>
+                        {detailRecipe?.dieta?.map((diet)=>(
+                            <IconsRecipes title={diet.name}/>
+                        ))}
                         <h3 >Resumen:</h3>
                         <p >{detailRecipe?.resumen}</p>                         
                         {/* <h3 >Puntuacion</h3>
