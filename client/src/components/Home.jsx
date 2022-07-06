@@ -80,7 +80,7 @@ export default function Home(){
         <div>
             <NavBar />
             <Box marginTop='250px'/>
-            <h1 marginTop='400px' contentEditable data-heading="Piece of Cake">Busca tu receta favorita</h1>
+            <h1 marginTop='400px'>Busca tu receta favorita</h1>
             
             <button  className='botoninicio' onClick={e=>{handleClick(e)}}>
                 Recargar

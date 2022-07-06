@@ -58,7 +58,7 @@ export default function CardRecipe({  diets, recipe }) {
         image={recipe.imagen}
         alt="Food"
       />
-      <Box display='flex' flexDirection='row' justifyContent='center'>{diets.map((diet)=>(<IconsRecipes title={diet.name}/>))}</Box>
+      <Box display='flex' flexDirection='row' justifyContent='center' margin='8px'>{diets.map((diet)=>(<IconsRecipes title={diet.name}/>))}</Box>
       </Link>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
