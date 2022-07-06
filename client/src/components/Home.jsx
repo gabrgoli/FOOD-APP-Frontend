@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { getRecipes,filterCreated,getDiets ,filteredByDiet, orderByTitle,orderBySpoonacularScore} from '../actions';
 import { Link } from 'react-router-dom';
-import CardRecipe from './CardRecipe';
+import CardRecipe from './CardRecipe2';
 import Paginado from './Paginado';
 import SearchBar from './SearchBar';
 import { Grid,CardMedia, Box, Typography, Divider } from '@mui/material'
@@ -130,7 +130,7 @@ export default function Home(){
                     return (
      
                         <Grid key={recipe._id} md={3} sx={{display:'flex',justifyContent:'center'}}>          
-                                <CardRecipe key={recipe.id} image={recipe.imagen} title={recipe.title} diets={recipe.dieta.map(r => <p>{r.name}</p>)} score={recipe.puntuacion} recipeId={recipe.id}></CardRecipe>
+                                <CardRecipe key={recipe.id} recipe={recipe}  diets={recipe.dieta} ></CardRecipe>
                         </Grid>
       
                         )

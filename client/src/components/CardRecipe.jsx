@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
  import FavoriteIcon from '@mui/icons-material/Favorite';
  import { Link } from 'react-router-dom';
  import { Grid, Box, Divider } from '@mui/material'
-import IconsRecipes from '../components/IconsRecipes'
+import DietIcons from './DietIcons'
 
 
 export default function CardRecipe({ image , title , diets,score, recipeId }){
@@ -39,7 +39,7 @@ export default function CardRecipe({ image , title , diets,score, recipeId }){
             <Box display='flex' flexDirection='row' justifyContent='center'>{diets}</Box>
             {
               diets.map((diet)=>(
-                <IconsRecipes title={diet.name}/>
+                <DietIcons title={diet.name}/>
               ))
             }
             

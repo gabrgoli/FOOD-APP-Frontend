@@ -22,7 +22,7 @@ const getApiInfo = async () => {
     return {
       id: el.id,
       title: el.title,
-      resumen: el.summary,
+      resumen: el.summary.replace(/<[^>]*>?/g, ""),
       puntuacion: el.spoonacularScore,
       nivel: el.healthScore,
       pasoApaso: el.analyzedInstructions[0]?.steps.map((each) => {
