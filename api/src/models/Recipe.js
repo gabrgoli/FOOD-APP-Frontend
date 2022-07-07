@@ -24,17 +24,18 @@ module.exports = (sequelize) => {
     },
     resumen: {
       type : DataTypes.TEXT,
-      allowNull:false
+      defaultValue: "no hay info",
     },
-    puntuacion: {
-      type:DataTypes.INTEGER,
-    },
+    // puntuacion: {
+    //   type:DataTypes.INTEGER,
+    // },
     nivel: {
       type: DataTypes.STRING,
-      allowNull:false
+      defaultValue: "0",
     },
     pasoApaso: {
       type: DataTypes.TEXT,
+      defaultValue: "no hay info",
     },
     imagen:{
       type: DataTypes.STRING(12345),

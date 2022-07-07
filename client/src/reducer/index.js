@@ -33,10 +33,7 @@ function rootReducer(state = initialState, action) {
       const allRecipes = state.allRecipes;
       const dietFiltered = action.payload === "all"? 
       allRecipes
-      : allRecipes.filter((el) => 
-
-           //el.dieta.includes(action.apyload)|| 
-           el.dieta.map((e)=> e.name).includes(action.payload)   
+      : allRecipes.filter((recipe) => recipe.dieta.map((diet)=> diet.name).includes(action.payload.toLowerCase())   
 
             );
       return {
@@ -61,19 +58,19 @@ function rootReducer(state = initialState, action) {
       const sortedRecipesSpoonScore =
         action.payload === "SpoonacularMax"
           ? state.allRecipes.sort(function (a, b) {
-              if (a.puntuacion < b.puntuacion) {
+              if (a.nivel < b.nivel) {
                 return 1;
               }
-              if (b.puntuacion < a.puntuacion) {
+              if (b.nivel < a.nivel) {
                 return -1;
               }
               return 0;
             })
           : state.allRecipes.sort(function (a, b) {
-              if (a.puntuacion < b.puntuacion) {
+              if (a.nivel < b.nivel) {
                 return -1;
               }
-              if (b.puntuacion < a.puntuacion) {
+              if (b.nivel < a.nivel) {
                 return 1;
               }
               return 0;

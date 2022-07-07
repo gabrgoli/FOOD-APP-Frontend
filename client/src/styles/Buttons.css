@@ -20,3 +20,15 @@
     background-color: rgb(232, 232, 175);
     border:1px solid rgb(1,40,83);
   }
+
+  .botonRecarga{
+    background-image:url('https://img2.freepng.es/20180403/lgq/kisspng-reload-computer-icons-download-patch-tor-update-button-5ac33e58b8c6b2.5932981215227449207569.jpg');
+    background-repeat:no-repeat;
+    height:150px;
+    width:150px;
+    background-size: 130px 130px;
+    background-position:center;
+    filter:brightness(1.1);
+    mix-blend-mode:multiply;
+    border: none;
+  }

@@ -5,8 +5,7 @@ import { getRecipes,filterCreated,getDiets ,filteredByDiet, orderByTitle,orderBy
 import { Link } from 'react-router-dom';
 import CardRecipe from './CardRecipe2';
 import Paginado from './Paginado';
-import SearchBar from './SearchBar';
-import { Grid,CardMedia, Box, Typography, Divider } from '@mui/material'
+import { Grid,CardMedia, Box, Typography, Button } from '@mui/material'
 import '../styles/Buttons.css';
 import NavBar from '../components/NavBar'
 
@@ -79,12 +78,10 @@ export default function Home(){
     return(//se pasan los values iguales a la API
         <div>
             <NavBar />
-            <Box marginTop='250px'/>
+            <Box marginTop='210px'/>
             <h1 marginTop='400px'>Busca tu receta favorita</h1>
             
-            <button  className='botoninicio' onClick={e=>{handleClick(e)}}>
-                Recargar
-            </button>
+
 
             
 
@@ -95,7 +92,7 @@ export default function Home(){
                     <option vale='desc'>Descendente</option>
                 </select>
                 <select className="select-css" onChange={e=>handleSortedRecipesSpoonScore(e)}>
-                    <option value="" >Ordenar por Puntaje</option>
+                    <option value="" >Ordenar por Puntaje saludable</option>
                     <option value="SpoonacularMax">Máximo</option>
                     <option value="SpoonacularMin">Mínimo</option>
                 </select>  
@@ -112,6 +109,10 @@ export default function Home(){
                 }
                 </select>
 
+                <Box justifyContent='center'>
+                    <Button className='botonRecarga' onClick={e=>{handleClick(e)}}></Button>
+                    <Typography>RECARGAR</Typography>
+                </Box>
 
                     <Paginado
                     key={paginado}

@@ -136,7 +136,7 @@ export default function RecipeCreate(){
     <Box display='fllex' justifyContent='center'  marginTop='250px'>
             <NavBar />
             
-            <Box marginTop='200px' mb='100px' sx={{boxShadow:'rgba(0, 0, 0, 0.35) 0px 5px 15px;',display:'flex',justifyContent:'center',flexDirection:{xs:'column',md:'column'}, width:'70%',borderRadius:3,alignItems:'center'}}>
+            <Box marginTop='100px' mb='100px' sx={{boxShadow:'rgba(0, 0, 0, 0.35) 0px 5px 15px;',display:'flex',justifyContent:'center',flexDirection:{xs:'column',md:'column'}, width:'70%',borderRadius:3,alignItems:'center'}}>
             <h1 >CREA TU PROPIA RECETA</h1>
             <form >
                 <Box >

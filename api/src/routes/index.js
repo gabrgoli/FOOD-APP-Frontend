@@ -16,14 +16,20 @@ const router = Router();
 
 const getApiInfo = async () => {
   const apiUrl = await axios.get(
-    `https://api.spoonacular.com/recipes/complexSearch?number=500&addRecipeInformation=true&diet&apiKey=${API_KEY}`
+    `https://api.spoonacular.com/recipes/complexSearch?number=500&offset=100&addRecipeInformation=true&diet&apiKey=${API_KEY}`
   );
-  const apiInfo = await apiUrl.data.results.map((el) => {
+  const apiUrl2 = await axios.get(
+    `https://api.spoonacular.com/recipes/complexSearch?number=500&offset=2&addRecipeInformation=true&diet&apiKey=${API_KEY}`
+  );
+
+  let apiUrl3=apiUrl.data.results.concat(apiUrl2.data.results)
+
+  const apiInfo = await apiUrl3.map((el) => {
     return {
       id: el.id,
       title: el.title,
       resumen: el.summary.replace(/<[^>]*>?/g, ""),
-      puntuacion: el.spoonacularScore,
+      //puntuacion: el.spoonacularScore,
       nivel: el.healthScore,
       pasoApaso: el.analyzedInstructions[0]?.steps.map((each) => {
         return each.step.concat({number:each.number, step:each.step})
@@ -57,8 +63,9 @@ const getDataBaseInfo = async () => {
       title: recipe.title,
       imagen: recipe.imagen,
       resumen: recipe.resumen,
-      puntuacion: recipe.puntuacion,
+      //puntuacion: recipe.puntuacion,
       nivel: recipe.nivel,
+      //dieta: recipe.TipoDeDieta,
       dieta: recipe.TipoDeDieta,
       pasoApaso: recipe.instructions,
     };
@@ -87,9 +94,9 @@ const searchByIdAtApi = async (id) => {
       title: detail.title,
       imagen: detail.image,
       resumen: detail.summary.replace(/<[^>]*>?/g, ""),
-      puntuacion: detail.spoonacularScore,
+      //puntuacion: detail.spoonacularScore,
       nivel: detail.healthScore,
-      dieta: detail.diets.map((each) => ({ name: each })),
+      dieta: detail.diets.map((diet) => ({ name: diet })),
       pasoApaso: detail.instructions.replace(/<[^>]*>?/g, ""),
     };
   } catch {
@@ -113,7 +120,7 @@ const searchByIdAtDB = async (id) => {
       title: recipe.title,
       imagen: recipe.imagen,
       resumen: recipe.resumen,
-      puntuacion: recipe.puntuacion,
+     // puntuacion: recipe.puntuacion,
       nivel: recipe.nivel,
       dieta: recipe.TipoDeDieta,
       pasoApaso: recipe.instructions,
@@ -153,14 +160,14 @@ router.get("/recipes", async (req, res) => {
       res.status(404).send("no esta la receta");
   } else {
     //console.log('todas la recetas',recipeTotal)
-   /* recipeTotal?.map((recipe) => {
+    /*recipeTotal?.map((recipe) => {
       Recipe.findOrCreate({ where: { 
-        title: recipe.title,
+        title: recipe?.title,
         resumen: recipe.resumen,
-        //nivel: recipe.nivel        
-        //pasoApaso: recipe.pasoApaso,
+        //nivel: toString(recipe.nivel)        
+      //  pasoApaso: recipe.pasoApaso,
         //imagen: recipe?.imagen
-        //createdInDb: false
+       // createdInDb: false
       } });
     });*/
 
