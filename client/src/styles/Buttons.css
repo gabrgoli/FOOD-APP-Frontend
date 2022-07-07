@@ -32,3 +32,24 @@
     mix-blend-mode:multiply;
     border: none;
   }
+
+  .botonNavegar {
+    border-radius: 10px;
+    background-color: rgb(190, 182, 29);
+    color: #4661A8;
+    text-align: center;
+    font-size: 2vh;
+    height: 100%;
+    width: 20vw;
+
+    transition: all 0.5s;
+    margin: 20px;
+    border:2px solid rgb(1,40,83);
+    align-items: center;
+    align-content: center;
+  }
+
+  .botonNavegar:hover{
+    background-color: rgb(232, 232, 175);
+    border:1px solid rgb(1,40,83);
+  }

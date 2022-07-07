@@ -1,8 +1,11 @@
 import axios from "axios";
+export const api='http://localhost:3001'
 
 export function getRecipes() {
   return async function (dispatch) {
-    var json = await axios.get("http://localhost:3001/recipes"); //LA RUTA QUE ME CREE EN EL BACK que trae todas la recetas
+    console.log("hola que tal");
+    var json = await axios.get(`http://localhost:3001/recipes`);
+    console.log("axios");
     return dispatch({
       type: "GET_RECIPES",
       payload: json.data,
@@ -13,7 +16,7 @@ export function getRecipes() {
 export function getDiets() {
   return async function (dispatch) {
     // try {
-    var json = await axios.get("http://localhost:3001/types");
+    var json = await axios.get(`http://localhost:3001/types`);
     return dispatch({
       type: "GET_DIETS_TYPES",
       payload: json.data,
@@ -31,14 +34,7 @@ export function filteredByDiet(payload) {
     payload,
   };
 }
-/*
-export function filterRecipeByStatus(payload) {
-  //el payload recibe el value de las opciones
-  return {
-    type: "FILTER_BY_VALUE",
-    payload,
-  };
-}*/
+
 
 export function filterCreated(payload) {
   return {
@@ -65,7 +61,7 @@ export function getTitleRecipes(name) {
   //buscar receta por nombre
   return async function (dispatch) {
     try {
-      var json = await axios.get(`http://localhost:3001/recipes?name=${name}`);
+      var json = await axios.get(`${api}/recipes?name=${name}`);
   
       return dispatch({
         type: "SEARCH_RECIPE",
@@ -83,7 +79,7 @@ export function postRecipe(payload) {
     //este dispatch no lo use, ver que pasa si lo borro
     try {
       console.log(payload);
-      var json = await axios.post(`http://localhost:3001/recipe`, payload);
+      var json = await axios.post(`${api}/recipe`, payload);
       return json;
     } catch (error) {
       console.log(error);
@@ -94,7 +90,7 @@ export function postRecipe(payload) {
 export function getDetail(id) {
   return async function (dispatch) {
     try {
-      var json = await axios.get(`http://localhost:3001/recipes/${id}`);
+      var json = await axios.get(`${api}/recipes/${id}`);
       return dispatch({
         type: "GET_DETAIL",
         payload: json.data,

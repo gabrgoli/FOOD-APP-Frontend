@@ -64,11 +64,11 @@ h1 {
   font-family: "CoreCircus", sans-serif;
   text-transform: uppercase;
   text-decoration-line: none;
-  font-size: 3vw;
+  /* font-size: 6vw; */
   text-align: center;
   line-height: 1;
-  margin: 5;
-  margin-left: 50;
+  margin: 1;
+  /* margin-left: 20; */
   /* top: 50%;
   left: 50%; */
   /* transform: translate(-50%, -50%); */
@@ -86,7 +86,7 @@ h1 {
   top: 0;
   z-index: 5;
 } */
-h1:before {
+/* h1:before {
   text-shadow: -1px -1px 0 #9e132c, 1px -1px 0 #9e132c, -1px 1px 0 #9e132c, 1px 1px 0 #9e132c, 1px 0px 0px #f5b10b, 0px 1px 0px #f5b10b, 2px 1px 0px #f5b10b, 1px 2px 0px #f5b10b, 3px 2px 0px #f5b10b, 2px 3px 0px #f5b10b, 4px 3px 0px #f5b10b, 3px 4px 0px #f5b10b, 5px 4px 0px #f5b10b, 3px 5px 0px #9e132c, 6px 5px 0px #9e132c, -1px 2px 0 black, 0 3px 0 #9e132c, 1px 4px 0 #9e132c, 2px 5px 0px #9e132c, 2px -1px 0 #9e132c, 3px 0 0 #2f3e9c, 4px 1px 0 #9e132c, 5px 2px 0px #9e132c, 6px 3px 0 #9e132c, 7px 4px 0 #9e132c, 10px 10px 4px rgba(106, 241, 119, 0.8);
   color: #65f283;
   height: 66%;
@@ -97,7 +97,7 @@ h1:after {
   color: #4ad9db;
   text-shadow: -1px -1px 0 #2f3e9c, 1px -1px 0 #2f3e9c, -1px 1px 0 #2f3e9c, 1px 1px 0 #2f3e9c, 1px 0px 0px #f98ca4, 0px 1px 0px #f98ca4, 2px 1px 0px #f98ca4, 1px 2px 0px #f98ca4, 3px 2px 0px #f98ca4, 2px 3px 0px #f98ca4, 4px 3px 0px #f98ca4, 3px 4px 0px #f98ca4, 5px 4px 0px #f98ca4, 3px 5px 0px #2f3e9c, 6px 5px 0px #2f3e9c, -1px 2px 0 black, 0 3px 0 #2f3e9c, 1px 4px 0 #2f3e9c, 2px 5px 0px #2f3e9c, 2px -1px 0 #2f3e9c, 3px 0 0 #2f3e9c, 4px 1px 0 #2f3e9c, 5px 2px 0px #2f3e9c, 6px 3px 0 #2f3e9c, 7px 4px 0 #2f3e9c;
   text-decoration-line: none;
-}
+} */
 
 h6 {
   font-family: Arial, Helvetica, sans-serif;
@@ -200,6 +200,7 @@ span.blue {
 .select-css option[selected] {
     background-color: orange;
 }
+
 
 
 

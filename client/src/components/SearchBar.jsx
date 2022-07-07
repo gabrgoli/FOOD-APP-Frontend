@@ -8,6 +8,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import {useLocation, useNavigate } from 'react-router-dom';
+import SearchPopUp from './SearchPopUp';
+import TextField from '@mui/material/TextField';
 
 export default function SearchBar (){
     const dispatch = useDispatch()
@@ -34,46 +36,44 @@ export default function SearchBar (){
 
     }*/
 
-    function openSearch(e){
-        console.log("hola pedro")
-
-    }
-
     //   console.log("pantalla",document.documentElement.scrollWidth)
     return(
+    <>
         <Box 
+        
             component="form"
-            className='SearchBar' 
-            display='flex' flexDirection='row' 
+            display='flex' 
+            flexDirection='row' 
             alignItems='center' 
             justifyContent='center'
             onSubmit={(e) => {
                 e.preventDefault()
-                dispatch(getTitleRecipes(name))
+                if(name===''){return console.log("no se busca nada")}
                 navigate(`/home`)
+                dispatch(getTitleRecipes(name))
               }}
         >
-            {/* <form> */}
-            <Box sx={{display:{xs:'none',md:'flex'}}}  >   
-                <input
-                    
+            <Box sx={{display:{xs:'none',md:'flex',width:'100%',alignItems:'center'}}}  >   
+                <p><input
+                    className='SearchInput'     
                     id='id1'
                     type = 'text'
                     placeholder = "Buscar...."
                     onChange = {(e)=> handleInputChange(e)}
-                    
                     >
-                </input>
+                </input></p>
+                <Box>
+                    <IconButton sx={{border:'3px solid rgb(1,40,83)'  , fontSize:'large' ,display:{xs:'none',md:'flex'}}} type='submit'  >
+                        <SearchIcon  sx={{ color:'white', fontSize:'large'}} >  </SearchIcon>
+                    </IconButton>
+                </Box>
             </Box>
-            {/* </form> */}
-            <div>
-            <IconButton sx={{border:'3px solid rgb(1,40,83)'  , fontSize:'large' ,display:{xs:'none',md:'flex'}}} type='submit'  >
-                <SearchIcon  sx={{ color:'white', fontSize:'large',display:{xs:'none',md:'flex'} }} >  </SearchIcon>
-            </IconButton>
-            <IconButton sx={{border:'3px solid rgb(1,40,83)'  , fontSize:'large', display:{xs:'flex',md:'none'}}} type='submit'  >
-                <SearchIcon  sx={{ color:'white', fontSize:'large' ,display:{xs:'flex',md:'none'} }} >  </SearchIcon>
-            </IconButton>
-            </div>
+
+
         </Box>
+        <Box display='flex' justifyContent='center'>
+            <SearchPopUp/>
+        </Box>
+    </>
     )
 }

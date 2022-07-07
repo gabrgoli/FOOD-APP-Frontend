@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { getRecipes,filterCreated,getDiets ,filteredByDiet, orderByTitle,orderBySpoonacularScore} from '../actions';
 import { Link } from 'react-router-dom';
-import CardRecipe from './CardRecipe2';
+import CardRecipe from './CardRecipe2.jsx';
 import Paginado from './Paginado';
 import { Grid,CardMedia, Box, Typography, Button } from '@mui/material'
 import '../styles/Buttons.css';
@@ -15,7 +15,7 @@ export default function Home(){
 
     const dispatch = useDispatch()
     const allRecipes = useSelector((State)=> State.recipes) //me trae del reducer el estado de recipes, que tiene todas las recetas
-    const allDiets = useSelector((State) => State.diets)
+    const allDiets = useSelector((State) => State.dietTypes)
 
     //PAGINADO
     const [currentPage,setCurrentPage]=useState(1) //creo un estado local en donde le paso la pagina actual
@@ -41,6 +41,8 @@ export default function Home(){
     useEffect(() => {
         dispatch(getDiets())
     },[dispatch])
+
+
 
     function handleClick(e){
         e.preventDefault();
@@ -74,17 +76,16 @@ export default function Home(){
 
         //guarda el valor d el criterio actual, max min o all, y verifica si hubo un cambio de valor y compara con el estado actual, si es diferente renderiza
     }
+    console.log('allRecipes',allRecipes)
 
     return(//se pasan los values iguales a la API
         <div>
             <NavBar />
+        
             <Box marginTop='210px'/>
-            <h1 marginTop='400px'>Busca tu receta favorita</h1>
-            
-
-
-            
-
+        
+            <h1 >Busca tu receta favorita</h1>
+            {allRecipes[0]?
             <div>
                 <select className="select-css" onChange={(e) => handleSortedRecipesTitle(e)}>
                     <option value="" >Ordenar Alfabéticamente</option>
@@ -111,7 +112,7 @@ export default function Home(){
 
                 <Box justifyContent='center'>
                     <Button className='botonRecarga' onClick={e=>{handleClick(e)}}></Button>
-                    <Typography>RECARGAR</Typography>
+                    <Typography>RESET</Typography>
                 </Box>
 
                     <Paginado
@@ -131,7 +132,7 @@ export default function Home(){
                     return (
      
                         <Grid key={recipe._id} md={3} sx={{display:'flex',justifyContent:'center'}}>          
-                                <CardRecipe key={recipe.id} recipe={recipe}  diets={recipe.dieta} ></CardRecipe>
+                                <CardRecipe key={recipe.id} recipe={recipe}  diets={recipe.diets} ></CardRecipe>
                         </Grid>
       
                         )
@@ -146,7 +147,7 @@ export default function Home(){
                     </div>  
              
 
-            </div>
+            </div>:<div>Cargando...</div>}
         </div>
 
     )

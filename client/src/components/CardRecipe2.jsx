@@ -29,7 +29,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function CardRecipe({  diets, recipe }) {
+export default function CardRecipe({  diets, recipe }) { //FUNCION PRINCIPAL
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -55,14 +55,14 @@ export default function CardRecipe({  diets, recipe }) {
       <CardMedia
         component="img"
         height="194"
-        image={recipe.imagen}
+        image={recipe.image}
         alt="Food"
       />
       <Box display='flex' flexDirection='row' justifyContent='center' margin='8px'>{diets.map((diet)=>(<IconsRecipes title={diet.name}/>))}</Box>
       </Link>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-            {recipe.resumen.slice(0,250)}
+            {recipe.summary.slice(0,250)}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -87,7 +87,7 @@ export default function CardRecipe({  diets, recipe }) {
           </Typography>
           <Typography paragraph>Method:</Typography>
           <Typography paragraph>
-            {recipe.pasoApaso}
+            {recipe.instructions}
           </Typography>
           <Typography paragraph>
 

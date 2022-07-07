@@ -6,6 +6,7 @@ import SearchBar from './SearchBar';
 import { Link } from 'react-router-dom';
 import '../styles/Buttons.css';
 import { useDispatch } from 'react-redux';
+import Typography from '@mui/material/Typography';
 
 export default function PrimarySearchAppBar() {
   
@@ -15,19 +16,22 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ zIndex: 'tooltip'}} position="fixed" width='100%' >
       <AppBar sx={{bgcolor:'#4661A8'}} >
         <Box display='flex'  flexDirection='row'  alignItems='center'>
+            
             <Box width='100%' display='flex' justifyContent='center'>
-                <Link to="/home" ><h1 onClick={()=>dispatch(getRecipes())}>Foods app</h1></Link>
+                <Link to="/home" ><h1 onClick={()=>dispatch(getRecipes())}><Typography sx={{fontSize:{xs:15,md:18}}}>Foods app</Typography></h1></Link>
             </Box>
+            
             <Box width='100%'>
                 <SearchBar/>
             </Box>
     
-            <Box width='100%' sx={{display:'flex',justifyContent:'right',alignItems:'center'}} >
+            <Box  >
                 {window.location.pathname==='/home' ?
-                <Link to = '/recipe'><button className='botoninicio'>Crear Receta</button></Link>
+                <Link to = '/recipe'><button className='botonNavegar' >Crear Receta</button></Link>
                 :   
-                <Link to="/home" > <button className='botoninicio' >Home</button></Link>}
+                <Link to="/home" > <button className='botonNavegar'>Home</button></Link>}
             </Box>
+
         </Box>
       </AppBar>
     </Box>

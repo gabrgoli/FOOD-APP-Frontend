@@ -34,19 +34,18 @@ export default function RecipeCreate(){
     const fileInputRef=useRef(null)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const allDiets = useSelector((state) => state.diets)
+    const allDiets = useSelector((state) => state.dietTypes)
     const [errors, setErrors] = useState({}) //estado local para manejar errores
     const[images,setImages]=React.useState([]);//array de strings de url de imagenes 
     const[upLoading,setUpLoading]=React.useState(false) //estado que sirve para mostrar "cargando foto"
   
     const [post, setPost] = useState({
         title: "",
-        resumen: "",
-        puntuacion: 50,
-        nivel: 50,
-        pasoApaso: "",
-        imagen:"",
-        dieta: []  
+        summary: "",
+        healthScore: 50,
+        instructions: "",
+        image:"",
+        diets: []  
     })
     useEffect(() => {
         dispatch(getDiets())
@@ -89,10 +88,10 @@ export default function RecipeCreate(){
         }))
     }
 
-    function handleSelect(e){
+    function handleSelectDiets(e){
         setPost({
             ...post,
-            dieta: [...post.dieta, e.target.value] //guarda en un arreglo lo qe vaya seleccionando
+            diets: [...post.diets, e.target.value] //guarda en un arreglo lo qe vaya seleccionando
         })
 
     }
@@ -104,25 +103,25 @@ export default function RecipeCreate(){
       ))
       }
 
-    function handleDietDelete(e,deleteThis){
+    function handleDeleteDiet(e,deleteThis){
         e.preventDefault()
         setPost({
             ...post,
-            dieta: post.dieta.filter(diet => diet !== deleteThis)
+            diets: post.diets.filter(diet => diet !== deleteThis)
         })
     }
 
     function handleSubmit(e){
         console.log("el post",post)
-        if(!post.title || !post.resumen){
+        if(!post.title || !post.summary){
             e.preventDefault()
             return alert("La receta necesita un titulo y un resumen")
-        } else if(!post.dieta.length){
+        } else if(!post.diets.length){
             e.preventDefault()
             return alert("Necesitas agregar por lo menos 1 tipo de dieta a la receta")
         } 
 
-            const newPost={...post,imagen:images[0]?images[0]:"https://res.cloudinary.com/dnlooxokf/image/upload/v1654057815/images/pzhs1ykafhvxlhabq2gt.jpg"}
+            const newPost={...post,image:images[0]?images[0]:"https://res.cloudinary.com/dnlooxokf/image/upload/v1654057815/images/pzhs1ykafhvxlhabq2gt.jpg"}
 
             dispatch(postRecipe(newPost))
             alert("Se creo la receta exitosamente!")
@@ -145,8 +144,8 @@ export default function RecipeCreate(){
                 </Box>
                 <label ><h1>Resumen</h1></label>
                 <div >
-                    <textarea rows="10" cols="50" type="text" label="Resumen" variant="outlined" name='resumen' value={post.resumen} onChange={(e)=>handleChange(e)} ></textarea>
-                    {errors.resumen && (<p >{errors.resumen}</p>)}
+                    <textarea rows="10" cols="50" type="text" label="Resumen" variant="outlined" name='summary' value={post.summary} onChange={(e)=>handleChange(e)} ></textarea>
+                    {errors.summary && (<p >{errors.summary}</p>)}
                 </div>
                 {/* <div >
                     <label >Puntuacion</label>
@@ -155,14 +154,14 @@ export default function RecipeCreate(){
                 </div> */}
                 <div >
                     <label ><h1>Puntaje de Salud</h1></label>
-                    <input  type="range" min="0" max="100" value={post.nivel} name="nivel" onChange={(e) => handleChange(e)}></input>
-                    {<h1 >{post.nivel}</h1>}
+                    <input  type="range" min="0" max="100" value={post.healthScore} name="healthScore" onChange={(e) => handleChange(e)}></input>
+                    {<h1 >{post.healthScore}</h1>}
                 </div>
                
                     <label ><h1>Preparacion</h1></label>
                 <div >
-                    <textarea rows="10" cols="50"  type="text" value={post.pasoApaso} name="pasoApaso" onChange={(e) => handleChange(e)}></textarea>
-                    {errors.pasoApaso && (<p >{errors.pasoApaso}</p>)}
+                    <textarea rows="10" cols="50"  type="text" value={post.instructions} name="instructions" onChange={(e) => handleChange(e)}></textarea>
+                    {errors.instructions && (<p >{errors.instructions}</p>)}
                 </div>
                 {/* <div >
                     <label >Cargar url de la imagen</label>
@@ -223,9 +222,9 @@ export default function RecipeCreate(){
               <Typography display='flex' justifyContent='center'>subiste {images.length} fotos</Typography>
             </Box>   
 
-                {/*/////////////////////////////////////////////// SELECCIONAR LAS DIETAS //////////////////////////////////////////////////////*/}        
+                {/*/////////////////////////////////////////////// MOSTRAR Y SELECCIONAR LAS DIETAS //////////////////////////////////////////////////////*/}        
                 <div >
-                    <select onChange={(e)=> handleSelect(e)}>
+                    <select onChange={(e)=> handleSelectDiets(e)}>
                         <option value="all" hidden name="diets" >Selecciona tipo de dieta</option>
                             {allDiets?.map(diet => {
                             return ( <option value={diet.id} key={diet.id}>{diet.name}</option>)
@@ -235,10 +234,10 @@ export default function RecipeCreate(){
 
                     {/*/////////////////////////////////////////////// ELIMINAR UNA DIETA //////////////////////////////////////////////////////*/}
                     <ul>
-                            {post.dieta.map(diet => 
+                            {post.diets.map(diet => 
                             <div >
                                 <p>{diet}</p>
-                                <button onClick={(e) => handleDietDelete(e,diet)}>x </button>
+                                <button onClick={(e) => handleDeleteDiet(e,diet)}>x </button>
                             </div>
                             )}
                     </ul>

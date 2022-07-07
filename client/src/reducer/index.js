@@ -2,7 +2,7 @@ const initialState = {
   recipes: [],
   allRecipes: [],
   copyRecipes: [],
-  typeOfDiets: [],
+  dietTypes: [],
   alerta:[],
   detail:[]
 };
@@ -13,27 +13,24 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         recipes: action.payload,
-        allRecipes: action.payload, //llena estados con todos los personajes
+        allRecipes: action.payload, //llena estados con todas las recetas
         copyRecipes: action.payload
       };
 
-    case "FILTER_CREATED": //muestra los creados por mi o los existentes en la base de datos
+    case "FILTER_CREATED": 
     const createdFilter = action.payload === "created"
           ? state.allRecipes.filter((el) => el.createdInDb)
-          //: state.copyRecipes.filter((el) => !el.createdInDb);
           : state.allRecipes;
       return {
         ...state,
         recipes: action.payload === "All" ? state.allRecipes : createdFilter,
-        //recipes: action.payload === "created" ? createdFilter : state.allRecipes,
-        //recipes: createdFilter,
       };
 
     case "FILTERED_BY_DIETS":
       const allRecipes = state.allRecipes;
       const dietFiltered = action.payload === "all"? 
       allRecipes
-      : allRecipes.filter((recipe) => recipe.dieta.map((diet)=> diet.name).includes(action.payload.toLowerCase())   
+      : allRecipes.filter((recipe) => recipe.diets.map((diet)=> diet.name.toLowerCase()).includes(action.payload.toLowerCase())   
 
             );
       return {
@@ -58,19 +55,19 @@ function rootReducer(state = initialState, action) {
       const sortedRecipesSpoonScore =
         action.payload === "SpoonacularMax"
           ? state.allRecipes.sort(function (a, b) {
-              if (a.nivel < b.nivel) {
+              if (a.healthScore < b.healthScore) {
                 return 1;
               }
-              if (b.nivel < a.nivel) {
+              if (b.healthScore < a.healthScore) {
                 return -1;
               }
               return 0;
             })
           : state.allRecipes.sort(function (a, b) {
-              if (a.nivel < b.nivel) {
+              if (a.healthScore < b.healthScore) {
                 return -1;
               }
-              if (b.nivel < a.nivel) {
+              if (b.healthScore < a.healthScore) {
                 return 1;
               }
               return 0;
@@ -82,7 +79,7 @@ function rootReducer(state = initialState, action) {
     case "GET_DIETS_TYPES":
       return {
         ...state,
-        diets: action.payload,
+        dietTypes: action.payload,
         //allRecipes: action.payload,
       };
     case "GET_DETAIL":

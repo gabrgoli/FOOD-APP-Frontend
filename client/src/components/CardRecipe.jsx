@@ -25,8 +25,8 @@ export default function CardRecipe({ image , title , diets,score, recipeId }){
 
   return (
   <div class="card" >
-        <Card sx={{ backgroundColor:'#D3CBC9', width: 300, height: 550, margin:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px', border:'4px solid rgb(1,40,83)' }}>
-        <Link to = {'/recipe/'+recipeId}>
+    <Card sx={{ backgroundColor:'#D3CBC9', width: 300, height: 550, margin:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px', border:'4px solid rgb(1,40,83)' }}>
+          <Link to = {'/recipe/'+recipeId}>
 
             <CardMedia
               component="img"
@@ -45,16 +45,16 @@ export default function CardRecipe({ image , title , diets,score, recipeId }){
             
             <Typography color='black' fontSize='20px'>{title}</Typography>
           </Link>
+
             <CardContent>
-            
-                
             </CardContent>
-         <CardActions sx={{display:'flex', justifyContent:'flex-end'}}>
+
+        <CardActions sx={{display:'flex', justifyContent:'flex-end'}}>
           <IconButton   onClick={ changeColor } style={{color: colorHeart}}>
             <FavoriteIcon />
           </IconButton>
         </CardActions> 
-      </Card>
-      </div>
-    )
+    </Card>
+  </div>
+  )
 }

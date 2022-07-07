@@ -22,22 +22,22 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    resumen: {
+    summary: {
       type : DataTypes.TEXT,
-      defaultValue: "no hay info",
+      
     },
     // puntuacion: {
     //   type:DataTypes.INTEGER,
     // },
-    nivel: {
-      type: DataTypes.STRING,
-      defaultValue: "0",
+    healthScore: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
-    pasoApaso: {
+    instructions: {
       type: DataTypes.TEXT,
       defaultValue: "no hay info",
     },
-    imagen:{
+    image:{
       type: DataTypes.STRING(12345),
     },
     createdInDb: {
