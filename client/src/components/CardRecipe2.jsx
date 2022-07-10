@@ -14,7 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Grid, Box, Divider } from '@mui/material'
+import { Grid, Box, Divider, Tooltip } from '@mui/material'
 import IconsRecipes from './DietIcons.jsx'
 import { Link } from 'react-router-dom';
 
@@ -45,7 +45,7 @@ export default function CardRecipe({  diets, recipe }) { //FUNCION PRINCIPAL
 
   return (
     <Card sx={{ maxWidth: 345, backgroundColor:'#D3CBC9',  margin:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px', border:'4px solid rgb(1,40,83)'  }}>
-      <Link to = {'/recipe/'+recipe.id}>
+      <Link to = {'/recipe/'+recipe?.id}>
       <Box sx={{height:'60px',mb:'5px'}}>
       <Typography sx={{fontSize:{xs:15,md:20},m:2,ml:4}}>{recipe.title}</Typography>
       </Box>
@@ -55,7 +55,7 @@ export default function CardRecipe({  diets, recipe }) { //FUNCION PRINCIPAL
       <CardMedia
         component="img"
         height="194"
-        image={recipe.image}
+        image={recipe?.image}
         alt="Food"
       />
       <Box display='flex' flexDirection='row' justifyContent='center' margin='8px'>{diets.map((diet)=>(<IconsRecipes title={diet.name}/>))}</Box>
@@ -72,6 +72,10 @@ export default function CardRecipe({  diets, recipe }) { //FUNCION PRINCIPAL
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
+        <Tooltip title={'Health Score'}>
+            <h2><span class="blue">{recipe?.healthScore}</span></h2>
+        </Tooltip>
+        
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

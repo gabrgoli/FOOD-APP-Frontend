@@ -6,11 +6,7 @@ module.exports = (sequelize) => {
 
 
    sequelize.define('Recipe', {
-    /*
-    https://api.spoonacular.com/recipes/complexSearch?apiKey=ee01ef64bf3d42fea8fa3dfb8884fd1b&addRecipeInformation=true%27
-
-    https://api.spoonacular.com/recipes/complexSearch?apiKey=ee01ef64bf3d42fea8fa3dfb8884fd1b&addRecipeInformation=true
-    */
+    
 
     id:{
       type: DataTypes.UUID,
@@ -35,7 +31,6 @@ module.exports = (sequelize) => {
     },
     instructions: {
       type: DataTypes.TEXT,
-      defaultValue: "no hay info",
     },
     image:{
       type: DataTypes.STRING(12345),

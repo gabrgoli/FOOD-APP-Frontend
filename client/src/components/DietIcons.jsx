@@ -20,7 +20,7 @@ export default function IconsRecipes ({title}){
             <Tooltip title={title}>
             <CardMedia
                 component="img"
-                height="25"
+                height={window.location.pathname==='/home'?"25":"85"}
                 image={imagen}
                 alt={imagen}
                 sx={{objectFit:'contain'}}

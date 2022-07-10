@@ -31,7 +31,7 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
                     </div> 
                 : */}
             
-                <Box display='fllex' justifyContent='center'>
+                <Box display='fllex' justifyContent='center' width='100%'>
                     <NavBar />
                     {loaded?
                         <Box marginTop='200px' mb='100px' sx={{boxShadow:'rgba(0, 0, 0, 0.35) 0px 5px 15px;',display:'flex',justifyContent:'center',flexDirection:{xs:'column',md:'column'}, width:'70%',borderRadius:3,alignItems:'center'}}>
@@ -53,7 +53,7 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
                             <p >{detailRecipe?.instructions}</p>
                         </Box>
                     :
-                    <div>Cargando...</div>}
+                    <Box mt="200px">Cargando...</Box>}
                 </Box>
                     
             

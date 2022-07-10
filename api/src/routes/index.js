@@ -3,46 +3,100 @@ const { Router } = require("express");
 // Ejemplo: const authRouter = require('./auth.js');
 const axios = require("axios");
 //const TipoDeDieta = require('../models/TipoDeDieta');
-const { Recipe, TipoDeDieta } = require("../db");
+const { Recipe, TipoDeDieta, Ingredient } = require("../db");
 const { API_KEY } = process.env;
 const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-//c085770cf9ff44dda5ad0d72367fde38
+let trabajarConAPI=false;
+let guardarApiEnBDD=false;
 
-//ee01ef64bf3d42fea8fa3dfb8884fd1b
+const getInstructions = (recipe) =>{
+  let texto=''
+    recipe.analyzedInstructions[0]?.steps.map((e)=>{
+      texto=`${texto} Step ${e.number}) ${e.step}`
+    })   
+    return texto                                                                          
+}
 
+const getIngredients = (recipe) =>{
+  let ingredientes=[]
+    recipe.analyzedInstructions[0]?.steps.map((step)=>{
+      step.ingredients.map((ingredient)=>{
+        ingredientes.push(ingredient.name)
+      })
+    })   
+    return ingredientes                                                                          
+}
+
+//FUNCION QUE GUARDA LOS DATOS EN LA BDD, RECIBE UN ARRAY DE RECETAS QUE VIENEN DE LA API
+const saveDataFromApiInBDD = (recipesInApi) =>{
+    // GUARDAR DATOS DE LA API EN LA BASE DE DATOS
+    recipesInApi?.map(async(recipe) => {
+      let [recipeCreated,booleanCreated] = await Recipe.findOrCreate({ where: { 
+        title: recipe?.title,
+        summary: recipe?.summary,
+        healthScore: recipe?.healthScore ,       
+        instructions: recipe?.instructions,
+        image: recipe?.image,
+        //diets: recipe?.diets,
+        //ingredients: recipe?.ingredients
+      }});
+     // GUARDA TODAS LAS DIETAS QUE VIENEN EN LA FUNCION getAllRecipes
+     recipe?.dietsParaBDD.map((tipoDieta) => {
+      TipoDeDieta.findOrCreate({ where: { name: tipoDieta } });
+    });
+    //traigo todas las  dietas de la BDD
+    let dietsDb = await TipoDeDieta.findAll({ where: { name: recipe.dietsParaBDD } });//
+    //entiendo quecarga en la tabla que une recetas con dietas, las dietas con su numero de receta que corresponde
+    dietsDb.map((dietaDb) => {
+      recipeCreated.addTipoDeDieta(dietaDb); //agregale tipo de dieta que coinciden con el nombre de dieta
+    });
+  
+  
+    // GUARDA LOS INGREDIENTES QUE VIENEN POR PARAMETRO EN LA BDD
+    recipe?.ingredients.map((ingredient) => {
+      Ingredient.findOrCreate({ where: { name: ingredient } });
+    });
+    
+    let ingredientsDb = await Ingredient.findAll({ where: { name: recipe.ingredients } });//traigo todos los ingredientes de la BDD
+    
+    ingredientsDb.map((ingredientDb) => {
+      recipeCreated.addIngredient(ingredientDb); //CREA LA RELACION ENTRE TABLA INGREDIENTES Y RECETAS
+    });
+
+  }); 
+}
+
+//TRAE DATOS DE LA API Y LOS GUARDA EN LA BASE DE EDATOS
 const getApiInfo = async () => {
   const apiUrl = await axios.get(
-    `https://api.spoonacular.com/recipes/complexSearch?number=100&offset=100&addRecipeInformation=true&diet&apiKey=${API_KEY}`
+    `https://api.spoonacular.com/recipes/complexSearch?number=500&offset=102&addRecipeInformation=true&diet&apiKey=${API_KEY}`
   );
-  /*const apiUrl2 = await axios.get(
+  const apiUrl2 = await axios.get(
     `https://api.spoonacular.com/recipes/complexSearch?number=500&offset=2&addRecipeInformation=true&diet&apiKey=${API_KEY}`
-  );*/
+  );
 
-  //let apiUrl3=apiUrl.data.results.concat(apiUrl2.data.results)
-  //const apiInfo = await apiUrl3.map((el) => {
-    const apiInfo = await apiUrl.data.results.map((el) => {
-      
+  let apiUrl3=apiUrl.data.results.concat(apiUrl2.data.results)
+  const apiInfo = await apiUrl3.map((el) => {
+    //const apiInfo = await apiUrl.data.results.map((el) => {
+    
     return {
       id: el.id,
-      title: el.title,
+      title: el?.title,
       summary: el.summary.replace(/<[^>]*>?/g, ""),
-      //puntuacion: el.spoonacularScore,
       healthScore: el.healthScore,
-      instructions: el.analyzedInstructions[0]?.steps.map((each) => {
-        return each.step.concat({number:each.number, step:each.step})
-      }),
+      instructions: getInstructions(el),
+      ingredients: getIngredients(el),
       image: el.image,
       diets: el.diets.map((diet) => ({ name: diet })),
-      //pasoApaso: el.analyzedInstructions.map(el=>el===steps),
-      createdInDb:false
+      dietsParaBDD:el.diets.map((diet) => (diet)),
     };
-
-  } ) ;
-  //console.log("apiInfo:",apiInfo[4])
+  } );
+  //console.log("dietsParaBDD",apiInfo[4].dietsParaBDD) //dietsParaBDD [ 'gluten free', 'dairy free', 'fodmap friendly', 'pescatarian' ]
+  guardarApiEnBDD && saveDataFromApiInBDD(apiInfo);
   return apiInfo;
 };
 
@@ -57,32 +111,52 @@ const getDataBaseInfo = async () => {
       },
     },
   });
-  returnRecipes = recipes.map((recipe) => {
-    return {
-      id: recipe.id,
-      title: recipe.title,
-      image: recipe.image,
-      summary: recipe.summary,
-      //puntuacion: recipe.puntuacion,
-      healthScore: recipe.healthScore,
-      //dieta: recipe.TipoDeDieta,
-      diets: recipe.TipoDeDieta,
-      instructions: recipe.instructions,
-    };
+
+  const recipes2 = await Recipe.findAll({
+    include: {
+      model: Ingredient,
+      attributes: ["name"],
+      through: {
+        attributes: [],
+      },
+    },
+  });
+let returnRecipes=[]
+
+  recipes.map((recipe) => {
+    recipes2.map((recipe2)=>{
+      if(recipe2.id===recipe.id){
+        returnRecipes.push({
+          id: recipe.id,
+          title: recipe.title,
+          image: recipe.image,
+          summary: recipe.summary,
+          healthScore: recipe.healthScore,
+          diets: recipe.TipoDeDieta,
+          ingredients:recipe2.Ingredients,
+          instructions: recipe.instructions,
+        });
+      }
+    })
   });
 
   return returnRecipes;
 };
 
 const getAllRecipes = async () => {
-  const apiInfo = await getApiInfo();
+  const apiInfo = trabajarConAPI ?await getApiInfo():null;
   const dbInfo = await getDataBaseInfo();
-  const infoTotal = apiInfo.concat(dbInfo);
-  //console.log(infoTotal);
-  return infoTotal;
+  const infoTotal = trabajarConAPI ? apiInfo.concat(dbInfo):dbInfo;
+
+  // FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
+  let arrayRecipesNoRepeatElement = infoTotal.filter((recipe,index)=>{
+    return infoTotal.indexOf(recipe) === index;
+})
+  return arrayRecipesNoRepeatElement;
 
 };
 
+// BUSCA UNA RECETA POR ID EN LA API
 const searchByIdAtApi = async (id) => {
   try {
     const recipe = await axios.get(
@@ -94,7 +168,7 @@ const searchByIdAtApi = async (id) => {
       title: detail.title,
       image: detail.image,
       summary: detail.summary.replace(/<[^>]*>?/g, ""),
-      //puntuacion: detail.spoonacularScore,
+      ingredients: getIngredients(detail),
       healthScore: detail.healthScore,
       diets: detail.diets.map((diet) => ({ name: diet })),
       instructions: detail.instructions.replace(/<[^>]*>?/g, ""),
@@ -104,8 +178,20 @@ const searchByIdAtApi = async (id) => {
   }
 };
 
+//BUSCA UNA RECETA POR EL ID EN LA BDD
 const searchByIdAtDB = async (id) => {
   try {
+    
+    const recipe2 = await Recipe.findByPk(id, {
+      include: {
+        model: Ingredient,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        }, 
+      },
+    });
+    
     const recipe = await Recipe.findByPk(id, {
       include: {
         model: TipoDeDieta,
@@ -115,106 +201,130 @@ const searchByIdAtDB = async (id) => {
         }, 
       },
     });
+
     return {
-      id: recipe.id,
-      title: recipe.title,
-      image: recipe.image,
-      summary: recipe.summary,
-     // puntuacion: recipe.puntuacion,
-      healthScore: recipe.healthScore,
+      id: recipe2.id,
+      title: recipe2.title,
+      image: recipe2.image,
+      summary: recipe2.summary,
+      healthScore: recipe2.healthScore,
       diets: recipe.TipoDeDieta,
-      instructions: recipe.instructions,
+      ingredients:recipe2?.Ingredients,
+      instructions: recipe2.instructions,
     };
+
   } catch {
     return undefined;
   }
 };
 
+//BUSCA UNA RECETA EN LA API Y BDD SEGUN EL ID
 const searchById = async (id) => {
-  const apiRecipeProm = searchByIdAtApi(id);
+  const apiRecipeProm = trabajarConAPI? searchByIdAtApi(id) : '';
   const dbRecipeProm = searchByIdAtDB(id);
 
   const [apiRecipe, dbRecipe] = await Promise.all([
     apiRecipeProm,
     dbRecipeProm,
-  ]); // hace las promesas
+  ]); 
 
   return apiRecipe || dbRecipe;
 };
 
-
-
-/*[ ] GET /recipes?name="...":
-Buscar Receta por nombre que lleva a traves de query O TRAE TODAS las recetas
-*/
-
+// RUTA QUE BUSCA RECETA SEGUN EL QUERY, O TRAE TODAS LAS RECETAS SI ES QUE NO VIENE QUERY
 router.get("/recipes", async (req, res) => {
-  const name = req.query.name; //
-  let recipeTotal = await getAllRecipes();
-  if (name) {
-    let recipeName = await recipeTotal.filter((el) =>el.title.toLowerCase().includes(name.toLowerCase())); 
-    
-    recipeName.length?
+ 
+  const name = req.query.name;  //GUARDA EN VARIABLE name LO QUE VIENE POR QUERY
+  let allRecipes = await getAllRecipes();// TRAE TODAS LAS RECETAS
+  if (name) { //SI VIENE name POR QUERY REALIZA UN FILTRO DE LAS RECETAS PARA BUSCAR RECETAS CON NOMBRE QUE INCLUYAN A name
+    let recipeName = await allRecipes.filter((el) =>el.title.toLowerCase().includes(name.toLowerCase())); 
+    recipeName.length? //SI SE ENCONTRO ALGO, DEVUELVE EL RESULTADO DEL FILTRADO
       res.status(200).send(recipeName)
     :
-      res.status(404).send("no esta la receta");
-  } else {
-    //console.log('todas la recetas',recipeTotal)
-   // console.log('ejemplo de nivel',recipeTotal)
-    recipeTotal?.map((recipe) => {
-      Recipe.findOrCreate({ where: { 
-        title: recipe?.title,
-        summary: recipe.summary,
-        healthScore: recipe.healthScore       
-      //  instructions: recipe.instructions,
-        //image: recipe?.image
-       // createdInDb: false
-      } });
-    });
-
-    res.status(200).send(recipeTotal); //si no hay un name no entra al if y muestra todas las recetas
+      res.status(404).send("no esta la receta"); // SI NO SE ENCONTRO RECETA QUE INCLUYA AL NOMBRE name, ENTONCES NO ENCONTRO LA RECETA
+  } else { // SI NO SE RECIBE NADA POR QUERY ENTONCES
+    res.status(200).send(allRecipes); // DEVUELVE TODAS LAS RECETAS
   }
 });
 
-/*
-[ ] GET /recipes/{idReceta}:
-Obtener el detalle de una receta en particular
-Debe traer solo los datos pedidos en la ruta de detalle de receta
-Incluir los tipos de dieta asociados
-*/
 
+// RUTA QUE TRAE UNA RECETA SEGUN EL ID 
 router.get("/recipes/:idReceta", async (req, res, next) => {
   try {
     const id = req.params.idReceta;
-    const detailById = await searchById(id);
-    if (!detailById) {
+    const recipeById = await searchById(id);
+    if (!recipeById) {
       return res.status(404).send("Recipe by Id doesn´t exist");
     }
-    res.status(200).send(detailById);
+    res.status(200).send(recipeById);
   } catch (error) {
     next(error);
   }
 });
 
+
+// RUTA QUE TRAE TODOS LOS TIPOS DE DIETA SIN REPETIR
 router.get("/types", async (req, res) => {
   try {
     const types = [];
-    const recipesApi = await getApiInfo();
-    const dietsApi = recipesApi.map((recipe) => recipe.diets);
+    //const recipesApi = await getApiInfo();
+    const recipesApi = await getAllRecipes();
+    const dietsApi = recipesApi.map((recipe) => recipe?.diets);
 
-    dietsApi.forEach((diet) =>
-    diet.forEach((diet) => {
+    //GUARDA EN EL ARRAY TYPES TODOS LOS TIPOS DE DIETA QUE HAY EN LA API, PERO SIN REPETIR
+    dietsApi?.forEach((diet) =>
+    diet?.forEach((diet) => {
         if (!types.includes(diet.name)) {
           types.push(diet.name);
         }
       })
     );
+
+    //GUARDA LAS DIETAS EN LA BDD QUE VIENEN DE LA API SIN REPETIR
     types.forEach((e) => {
       TipoDeDieta.findOrCreate({
-        where: { name: e[0].toUpperCase()+e.substring(1) },
+        //where: { name: e[0].toUpperCase()+e.substring(1) },
+        where: { name: e }
       });
     });
+
+    //TRAE TODOS LOS TIPOS DE DIETAS DE LA BASE DE DATOS
     const allresults = await TipoDeDieta.findAll({
+      attributes: ["name"],
+    });
+
+    // DEVUELVE TODAS LAS DIETAS, CON UN ARRAY DE OBJETOS
+    res.send(
+      allresults.map((e) => {
+        return { name: e.name };
+      })
+    );
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// RUTA QUE TRAE TODOS LOS INGREDIENTES SIN REPETIR
+router.get("/ingredients", async (req, res) => {
+  try {
+    const ingredients = [];
+    const recipes = await getAllRecipes();
+    const ingredientsApi = recipes.map((recipe) => recipe.ingredients);
+    //GUARDA EN EL ARRAY ingredients TODOS LOS INGREDIENTES QUE HAY EN LA API, PERO SIN REPETIR
+    ingredientsApi.forEach((ingredient) =>
+    ingredient.forEach((ingredient) => {
+        if (!ingredients.includes(ingredient.name)) {
+          ingredients.push(ingredient.name);
+        }
+      })
+    );
+    ingredients.forEach((e) => {
+      Ingredient.findOrCreate({
+        //where: { name: e[0].toUpperCase()+e.substring(1) },
+        where: { name: e }
+      });
+    });
+    const allresults = await Ingredient.findAll({
       attributes: ["name"],
     });
 
@@ -223,21 +333,11 @@ router.get("/types", async (req, res) => {
         return { name: e.name };
       })
     );
-    /*
-    const dat = [
-      { name: "gluten free" },
-      { name: "dairy free" },
-      { name: "lacto ovo vegetarian" },
-      { name: "vegan" },
-      { name: "paleolithic" },
-      { name: "pescatarian" },
-    ];
-    res.send(dat);*/
-    //res.send(types);
   } catch (error) {
     console.log(error);
   }
 });
+
 
 /*
 [ ] POST /recipe:
@@ -247,8 +347,9 @@ Crea una receta en la base de datos
 
 /* */
 
+// RUTA PARA CREAR UNA RECETA 
 router.post("/recipe", async (req, res, next) => {
-  //traigo los datos de la ereceta que vienen por body
+  // TRAE TODOS LOS DATOS QUE VIENEN POR POST
   const {
     title,
     summary,
@@ -256,29 +357,39 @@ router.post("/recipe", async (req, res, next) => {
     instructions,
     image,
     diets,
-    createdInDb,
+    ingredients,
   } = req.body;
 
-  //Cargo una variable con los datos de la receta
+
+  //console.log("que llega por diets",diets) // que llega por diets [ 'Vegan', 'Primal', 'Paleolithic' ]
+
+  // GUARDO LA RECETA EN LA BDD
   let recipeCreated = await Recipe.create({ //no le paso tipo de dieta porque se hace la relacion aparte
     title,
     summary,
     healthScore,
     instructions,
     image,
-    createdInDb,
-  });
-  //Guarda las diestas de la API en la BDD
-  diets.map((tipoDieta) => {
-    TipoDeDieta.findOrCreate({ where: { name: tipoDieta } });
   });
 
+  diets.map((tipoDieta) => {
+    TipoDeDieta.findOrCreate({ where: { name: tipoDieta } });  // GUARDA TODAS LAS DIETAS QUE VIENEN POR BODY EN LA BDD
+  });
   //traigo todas las  dietas de la BDD
-  let dietaDb = await TipoDeDieta.findAll({ where: { name: dieta } });//dieta llega por body
+  let dietsDb = await TipoDeDieta.findAll({ where: { name: diets } });//diets llega por body
+
+  dietsDb.map((dietaDb) => {
+    recipeCreated.addTipoDeDieta(dietaDb); //CREA LA RELACION ENTRE TABLAS RECETA Y DIETAS
+  });
+
+  ingredients.map((ingredient) => {
+    ingredient.findOrCreate({ where: { name: ingredient } });  // GUARDA LOS INGREDIENTES QUE VIENEN POR PARAMETRO EN LA BDD
+  });
   
-  //entiendo quecarga en la tabla que une recetas con dietas, las dietas con su numero de receta que corresponde
-  dietaDb.map((unaDietaDb) => {
-    recipeCreated.addTipoDeDieta(unaDietaDb); //agregale tipo de dieta que coinciden con el nombre de dieta
+  let ingredientsDb = await Ingredient.findAll({ where: { name: ingredients } });//TREA TODOS LOS INGREDIENTES DE LA BASE DE DATOS
+
+  ingredientsDb.map((ingredientDb) => {
+    recipeCreated.addIngredient(ingredientDb); //CREA LA RELACION  ENTRE TABLAS RECETAS E INGREDIENTES
   });
 
   res.send("receta cargada con exito");

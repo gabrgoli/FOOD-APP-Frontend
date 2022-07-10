@@ -23,7 +23,7 @@ export default function Home(){
     const indexOfLastRecipe = currentPage * recipesPerPage //porque si estoy en la pagina 3, el ultimo recipe va a ser 6*3=18
     const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage //da el index de la primera receta
     const currentRecipes = allRecipes.slice(indexOfFirstRecipe,indexOfLastRecipe) //va mostrando cuantos recipes hay que rednerizar por pagina
-
+    const [loaded,setLoaded]=React.useState(false)
 
         // estados locales para renderizar los globales
         const [aux,forzarRenderizado] = useState("") //estado local que arranca vacio
@@ -34,42 +34,52 @@ export default function Home(){
     }
 
     useEffect(()=>{
-        (allRecipes.length===0)&&dispatch(getRecipes());
+        (allRecipes.length===0)&&dispatch(getRecipes()).then(()=>setLoaded(true));
         console.log("se hizo el dispatch")
     },[dispatch])
 
     useEffect(() => {
-        dispatch(getDiets())
+        dispatch(getDiets()).then(()=>setLoaded(true))
     },[dispatch])
 
 
 
     function handleClick(e){
+        setLoaded(false);
         e.preventDefault();
-        dispatch(getRecipes());
+        dispatch(getRecipes())
+        setLoaded(true);
     }
 
 
-    function handleFilterCreated(e){
-        dispatch(filterCreated(e.target.value))
-    }
+    /*function handleFilterCreated(e){
+        setLoaded(false);
+        dispatch(filterCreated(e.target.value));
+        setLoaded(true)
+    }*/
 
-    function handleFilteredDiet(e){
-        dispatch(filteredByDiet(e.target.value))
+    function handleFilteredDiet (e){
+        setLoaded(false);
+        dispatch(filteredByDiet(e.target.value));
+        setLoaded(true);
         setCurrentPage(1)
         e.preventDefault()
     }
 
     function handleSortedRecipesSpoonScore(e){
+        setLoaded(false)
         dispatch(orderBySpoonacularScore(e.target.value))
+        setLoaded(true)
         setCurrentPage(1)
         setScore(e.target.value)
         e.preventDefault()
     }
 
     function handleSortedRecipesTitle(e){
+        setLoaded(false)
         e.preventDefault();
         dispatch(orderByTitle(e.target.value))
+        setLoaded(true)
         setCurrentPage(1);//setea la pagina principal
         forzarRenderizado(e.target.value) //renderiza modificando el estado local, ordenado de tal forma, solo hace la modificacion en el renderizado
         //setorder('Ordenado ${e.target.value}')
@@ -85,27 +95,27 @@ export default function Home(){
             <Box marginTop='210px'/>
         
             <h1 >Busca tu receta favorita</h1>
-            {allRecipes[0]?
+            {loaded?
             <div>
                 <select className="select-css" onChange={(e) => handleSortedRecipesTitle(e)}>
-                    <option value="" >Ordenar Alfabéticamente</option>
-                    <option value='asc'>Ascendente</option> 
-                    <option vale='desc'>Descendente</option>
+                    <option value="" >Alphabetic Order</option>
+                    <option value='asc'>A-Z</option> 
+                    <option vale='desc'>Z-A</option>
                 </select>
                 <select className="select-css" onChange={e=>handleSortedRecipesSpoonScore(e)}>
-                    <option value="" >Ordenar por Puntaje saludable</option>
-                    <option value="SpoonacularMax">Máximo</option>
-                    <option value="SpoonacularMin">Mínimo</option>
+                    <option value="" >Order by HealthScore</option>
+                    <option value="SpoonacularMax">Max</option>
+                    <option value="SpoonacularMin">Min</option>
                 </select>  
-                <select className="select-css" onChange={e=>handleFilterCreated(e)}>
+                {/* <select className="select-css" onChange={e=>handleFilterCreated(e)}>
                     <option value='All'>Ver Todas las Recetas o solo las creadas</option>
                     <option value='created'>Recetas Creaas</option>
                     <option value='api'>Todas las Recetas</option>
-                </select>
+                </select> */}
                 <select className="select-css"  onChange={e => handleFilteredDiet(e)}>
-                    <option value="all">Filtrar por tipo de dieta</option>
+                    <option value="all">Filter by tipe of diet</option>
                     {allDiets?.map(diet => {
-                        return ( <option value={diet.name}>{diet.name}</option>)
+                        return ( <option value={diet.name}>{diet.name[0].toUpperCase()+diet.name.substring(1)}</option>)
                     })
                 }
                 </select>
@@ -131,8 +141,8 @@ export default function Home(){
                 currentRecipes?.map(recipe => {
                     return (
      
-                        <Grid key={recipe._id} md={3} sx={{display:'flex',justifyContent:'center'}}>          
-                                <CardRecipe key={recipe.id} recipe={recipe}  diets={recipe.diets} ></CardRecipe>
+                        <Grid key={recipe?.id}  md={3} sx={{display:'flex',justifyContent:'center'}}>          
+                                <CardRecipe key={recipe?.id} recipe={recipe}  diets={recipe?.diets} ></CardRecipe>
                         </Grid>
       
                         )

@@ -135,7 +135,7 @@ export default function RecipeCreate(){
     <Box display='fllex' justifyContent='center'  marginTop='250px'>
             <NavBar />
             
-            <Box marginTop='100px' mb='100px' sx={{boxShadow:'rgba(0, 0, 0, 0.35) 0px 5px 15px;',display:'flex',justifyContent:'center',flexDirection:{xs:'column',md:'column'}, width:'70%',borderRadius:3,alignItems:'center'}}>
+            <Box bgcolor='#F5C86A'  mb='100px' sx={{boxShadow:'rgba(0, 0, 0, 0.35) 0px 5px 15px;',display:'flex',justifyContent:'center',flexDirection:{xs:'column',md:'column'}, width:'70%',borderRadius:3,alignItems:'center',  border:'2px solid rgb(1,40,83)'}}>
             <h1 >CREA TU PROPIA RECETA</h1>
             <form >
                 <Box >
@@ -143,10 +143,10 @@ export default function RecipeCreate(){
                     {errors.title && (<p >{errors.title}</p>)}
                 </Box>
                 <label ><h1>Resumen</h1></label>
-                <div >
-                    <textarea rows="10" cols="50" type="text" label="Resumen" variant="outlined" name='summary' value={post.summary} onChange={(e)=>handleChange(e)} ></textarea>
+                <Box>
+                    <textarea rows="10" cols="30" type="text" label="Resumen" variant="outlined" name='summary' value={post.summary} onChange={(e)=>handleChange(e)} ></textarea>
                     {errors.summary && (<p >{errors.summary}</p>)}
-                </div>
+                </Box>
                 {/* <div >
                     <label >Puntuacion</label>
                     <input  type="range" min="0" max="100" value={post.puntuacion} name="puntuacion" onChange={(e) => handleChange(e)}></input>
@@ -158,9 +158,9 @@ export default function RecipeCreate(){
                     {<h1 >{post.healthScore}</h1>}
                 </div>
                
-                    <label ><h1>Preparacion</h1></label>
+                    <label ><h1><Typography fontSize={25}>Preparacion</Typography></h1></label>
                 <div >
-                    <textarea rows="10" cols="50"  type="text" value={post.instructions} name="instructions" onChange={(e) => handleChange(e)}></textarea>
+                    <textarea rows="10" cols="30"  type="text" value={post.instructions} name="instructions" onChange={(e) => handleChange(e)}></textarea>
                     {errors.instructions && (<p >{errors.instructions}</p>)}
                 </div>
                 {/* <div >
@@ -168,7 +168,7 @@ export default function RecipeCreate(){
                     <input  type="url" value={post.image} name="image" onChange={(e) => handleChange(e)}></input>
                 </div> */}
 
-
+                 {/* BOTON CARGAR IMAGEN */}
                 <Box sx={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
                     <Button
                     color="secondary"
@@ -179,7 +179,6 @@ export default function RecipeCreate(){
                         Cargar imagen
                     </Button>
                 </Box>
-
 
                         <input 
                         multiple
@@ -222,12 +221,12 @@ export default function RecipeCreate(){
               <Typography display='flex' justifyContent='center'>subiste {images.length} fotos</Typography>
             </Box>   
 
-                {/*/////////////////////////////////////////////// MOSTRAR Y SELECCIONAR LAS DIETAS //////////////////////////////////////////////////////*/}        
+                {/*/////////////////////////////////////////////// MOSTRAR Y SELECCIONAR TIPOS DE DIETAS //////////////////////////////////////////////////////*/}        
                 <div >
                     <select onChange={(e)=> handleSelectDiets(e)}>
                         <option value="all" hidden name="diets" >Selecciona tipo de dieta</option>
                             {allDiets?.map(diet => {
-                            return ( <option value={diet.id} key={diet.id}>{diet.name}</option>)
+                            return ( <option value={diet.id} key={diet.id}>{diet.name[0].toUpperCase()+diet.name.substring(1)}</option>)
                             })
                             } 
                     </select>
@@ -243,8 +242,9 @@ export default function RecipeCreate(){
                     </ul>
                 </div>
                  {/*/////////////////////////////////////////////// BOTON DE CREAR RECETA //////////////////////////////////////////////////////*/}
-                <button  type="submit" onClick={(e) => handleSubmit(e)}>Crear Receta</button>
-           
+                <Box mb='20px'>
+                    <button  className="botonNavegar" type="submit" onClick={(e) => handleSubmit(e)}>Crear Receta</button>
+                </Box>
             </form>
             </Box>
         </Box>
