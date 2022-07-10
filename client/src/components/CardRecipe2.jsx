@@ -17,6 +17,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Grid, Box, Divider, Tooltip } from '@mui/material'
 import IconsRecipes from './DietIcons.jsx'
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -41,6 +42,7 @@ export default function CardRecipe({  diets, recipe }) { //FUNCION PRINCIPAL
     if(colorHeart==="black"){setColorHeart("red")}
     else{ setColorHeart("black")} 
   }
+
 
 
   return (
@@ -69,7 +71,12 @@ export default function CardRecipe({  diets, recipe }) { //FUNCION PRINCIPAL
         <IconButton onClick={ changeColor } style={{color: colorHeart}} aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton aria-label="share" onClick={() => {navigator.clipboard.writeText(`${window.location.origin}/recipe/${recipe.id}`);swal({
+                title:"URL copiado",
+                text:"Se copio la dirección de la Receta en el portapapeles",
+                icon:"success",
+                button:"Aceptar"
+                }) }}>
           <ShareIcon />
         </IconButton>
         <Tooltip title={'Health Score'}>
@@ -88,9 +95,14 @@ export default function CardRecipe({  diets, recipe }) { //FUNCION PRINCIPAL
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
         <Typography paragraph>
+            <h3 >Ingredients:</h3>
+            {recipe.ingredients?.map((ingredient)=>{
+                return <>{`${ ingredient.name[0].toUpperCase()}${ingredient.name.substring(1)} `}</>
+            })}
           </Typography>
-          <Typography paragraph>Method:</Typography>
+
           <Typography paragraph>
+          <h3 >Instructions:</h3>
             {recipe.instructions}
           </Typography>
           <Typography paragraph>

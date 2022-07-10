@@ -22,7 +22,7 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
 //console.log(detailRecipe);
 // console.log("url de ahora",window.location.pathname);
 // console.log(recipeId.id);
-// console.log("detailRecipe",detailRecipe);
+ console.log("detailRecipe",detailRecipe);
     return (
         <>
             {/* {((!detailRecipe)&&(window.location.pathname!==(`/recipe/${detailRecipe.id}`)))?
@@ -39,17 +39,21 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
                             <img objectFit='contain' width = "100%"  src={detailRecipe?.image} alt="la imagen no se encuentra"/>
            
                             <Box display='flex' flexDirection='row' justifyContent='center'>{detailRecipe.diets?.map((diet)=>(<DietIcons title={diet.name}/>))}</Box>
-         
-                            <h3 >Resumen:</h3>
+                            <h3 >Ingredients:</h3>
+                            {detailRecipe.ingredients?.map((ingredient)=>{
+                               return <>{`${ ingredient.name[0].toUpperCase()}${ingredient.name.substring(1)} `}</>
+                            })}
+                               
+                            <h3 >Summary:</h3>
                             <p >{detailRecipe?.summary}</p>                         
                             {/* <h3 >Puntuacion</h3>
                             <p >{detailRecipe?.puntuacion}</p> */}
-                            <h3 >Puntaje de Salud</h3>
+                            <h3 >Health Score</h3>
                             <h2><span class="blue">{detailRecipe?.healthScore}</span></h2>
 
                             
     
-                            <h3 >Instrucciones</h3>
+                            <h3 >Instructions</h3>
                             <p >{detailRecipe?.instructions}</p>
                         </Box>
                     :

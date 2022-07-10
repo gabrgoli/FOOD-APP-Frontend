@@ -2,6 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import CardMedia from '@mui/material/CardMedia';
 import Tooltip from '@mui/material/Tooltip';
+import { Typography } from '@mui/material';
 
 export default function IconsRecipes ({title}){
     console.log("title:",title)
@@ -24,8 +25,10 @@ export default function IconsRecipes ({title}){
                 image={imagen}
                 alt={imagen}
                 sx={{objectFit:'contain'}}
-            />   
+            /> 
             </Tooltip>
+
+            <Typography sx={{display:{md:'none'}}}>{title}</Typography>  
         </Box>
     )
 }

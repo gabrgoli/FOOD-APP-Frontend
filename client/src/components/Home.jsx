@@ -87,7 +87,7 @@ export default function Home(){
         //guarda el valor d el criterio actual, max min o all, y verifica si hubo un cambio de valor y compara con el estado actual, si es diferente renderiza
     }
     console.log('allRecipes',allRecipes)
-
+    console.log("url",window.location)
     return(//se pasan los values iguales a la API
         <div>
             <NavBar />

@@ -12,7 +12,7 @@ import { UploadOutlined } from '@ant-design/icons';
 //import { Navigation, Pagination, Scrollbar, A11y } from 'swiper'
 //import { Swiper, SwiperSlide } from 'swiper/react'
 //import 'swiper/css';
-//import swal from 'sweetalert';
+import swal from 'sweetalert';
 
 function validate(post){
     let errors = {}
@@ -115,16 +115,31 @@ export default function RecipeCreate(){
         console.log("el post",post)
         if(!post.title || !post.summary){
             e.preventDefault()
-            return alert("La receta necesita un titulo y un resumen")
+            return  swal({
+                title:"Error",
+                text:"La receta necesita un titulo y un resumen",
+                icon:"error",
+                button:"Aceptar"
+              })
         } else if(!post.diets.length){
             e.preventDefault()
-            return alert("Necesitas agregar por lo menos 1 tipo de dieta a la receta")
+            return swal({
+                title:"Error",
+                text:"Necesitas agregar por lo menos 1 tipo de dieta a la receta",
+                icon:"error",
+                button:"Aceptar"
+              })
         } 
 
             const newPost={...post,image:images[0]?images[0]:"https://res.cloudinary.com/dnlooxokf/image/upload/v1654057815/images/pzhs1ykafhvxlhabq2gt.jpg"}
 
             dispatch(postRecipe(newPost))
-            alert("Se creo la receta exitosamente!")
+            swal({
+                title:"Success",
+                text:"The recipe was succesfuly created",
+                icon:"succes",
+                button:"Aceptar"
+              })
             navigate("/home")
         
     }
