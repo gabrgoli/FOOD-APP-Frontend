@@ -30,18 +30,19 @@ export default function CardRecipe({ recipe }){
   return (
     < >
       <Box sx={{display:'flex',flexDirection:'row',bgcolor:'#D3CBC9',width:'100%',height:'40vw',marginY:2,boxShadow:'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;', border:'1px solid rgb(1,40,83)'}}> 
+      
           <Box sx={{width:'50%vw'}}>
-              
+          <Typography sx={{fontSize:'2vw',display:'flex',position:"absolute"}}><span class="blue" >{recipe?.healthScore}</span></Typography>
               <CardMedia
                 component="img"
                 height='100%'
                 width='100%'
                 image={recipe.image}
                 alt="gf"
-                sx={{objectFit:'cover',mb:'-150px'}}
+                sx={{objectFit:'cover'}}
                 onClick={()=>{navigate(`/recipe/${recipe.id}`)}}>
               </CardMedia>
-              <Typography sx={{fontSize:'10px',display:'flex'}}><span class="blue" >{recipe?.healthScore}</span></Typography>  
+              
              
           </Box >
           <Box sx={{display:'flex',flexDirection:'column',width:'100%'}}>
