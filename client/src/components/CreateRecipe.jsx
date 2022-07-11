@@ -38,7 +38,6 @@ export default function RecipeCreate(){
     const [errors, setErrors] = useState({}) //estado local para manejar errores
     const[images,setImages]=React.useState([]);//array de strings de url de imagenes 
     const[upLoading,setUpLoading]=React.useState(false) //estado que sirve para mostrar "cargando foto"
-  
     const [post, setPost] = useState({
         title: "",
         summary: "",
@@ -133,17 +132,13 @@ export default function RecipeCreate(){
 
             const newPost={...post,image:images[0]?images[0]:"https://res.cloudinary.com/dnlooxokf/image/upload/v1654057815/images/pzhs1ykafhvxlhabq2gt.jpg"}
 
-            dispatch(postRecipe(newPost))
-            swal({
-                title:"Success",
-                text:"The recipe was succesfuly created",
-                icon:"succes",
-                button:"Aceptar"
-              })
-            navigate("/home")
-        
-    }
-
+            dispatch(postRecipe(newPost)).then(async(r)=>{
+                console.log("resBack crear producto",r)
+                if(r.payload==="receta cargada con exito"){
+                    await swal({title:"Success",text:"The recipe was succesfuly created",icon:"success",button:"Acept"}).then(()=> {navigate("/home")}) 
+                }
+            })
+        }
 
     return(
         

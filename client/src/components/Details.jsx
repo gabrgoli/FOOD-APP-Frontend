@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import swal from 'sweetalert';
+import Loading from '../components/Loading'
 
 export default function DetailRecipe(){ //FUNCION PRINCIPAL
     const dispatch = useDispatch()
@@ -83,7 +84,7 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
                             <Typography variant='h5'>{detailRecipe?.instructions}</Typography>
                         </Box>
                     :
-                    <Box mt="200px">Cargando...</Box>}
+                    <Loading/>}
                 </Box>
                     
             
