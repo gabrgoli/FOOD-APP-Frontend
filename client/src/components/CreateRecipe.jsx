@@ -126,7 +126,7 @@ export default function RecipeCreate(){
                 title:"Error",
                 text:"Necesitas agregar por lo menos 1 tipo de dieta a la receta",
                 icon:"error",
-                button:"Aceptar"
+                button:"Acept"
               })
         } 
         e.preventDefault()
