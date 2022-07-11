@@ -1,7 +1,8 @@
 import axios from "axios";
 import swal from 'sweetalert';
-//export const api='http://localhost:3001'
-export const api='https://food-app-recetas.herokuapp.com'
+export const api='http://localhost:3001'
+//export const api='https://food-app-recetas.herokuapp.com'
+
 
 export function getRecipes() {
   return async function (dispatch) {

@@ -52,7 +52,7 @@ export default function CardRecipe({  recipe }) { //FUNCION PRINCIPAL
       <Link to = {'/recipe/'+recipe?.id}>
       <Tooltip title={recipe.title} placement="top" > 
       <Box sx={{height:'60px',mb:'15px'}}>
-        <Typography variant='h2' sx={{fontSize:30,m:2,ml:4}}>{recipe.title}</Typography>
+        <Typography variant='h2' sx={{fontSize:30,m:2,ml:4}}>{recipe.title.slice(0,30)}</Typography>
       </Box>
       </Tooltip>
       <CardMedia
