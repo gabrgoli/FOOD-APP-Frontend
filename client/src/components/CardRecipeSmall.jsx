@@ -31,15 +31,18 @@ export default function CardRecipe({ recipe }){
     < >
       <Box sx={{display:'flex',flexDirection:'row',bgcolor:'#D3CBC9',width:'100%',height:'40vw',marginY:2,boxShadow:'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;', border:'1px solid rgb(1,40,83)'}}> 
           <Box sx={{width:'50%vw'}}>
+              
               <CardMedia
                 component="img"
                 height='100%'
                 width='100%'
                 image={recipe.image}
                 alt="gf"
-                sx={{objectFit:'cover'}}
+                sx={{objectFit:'cover',mb:'-150px'}}
                 onClick={()=>{navigate(`/recipe/${recipe.id}`)}}>
               </CardMedia>
+              <Typography sx={{fontSize:'10px',display:'flex'}}><span class="blue" >{recipe?.healthScore}</span></Typography>  
+             
           </Box >
           <Box sx={{display:'flex',flexDirection:'column',width:'100%'}}>
               <Box sx={{width:'100%',height:'100%'}}>
@@ -55,6 +58,7 @@ export default function CardRecipe({ recipe }){
                         {recipe.diets.map((diet)=>(<IconDiet title={diet.name}/>))}
                     </IconButton>
                     <Box display='flex' justifyContent='right' width='100%'>
+                      
                       <IconButton  onClick={ changeColor } style={{color: colorHeart}}>
                         <FavoriteIcon fontSize='small'/>
                       </IconButton> 

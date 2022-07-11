@@ -9,7 +9,7 @@ import Paginado from './Paginado';
 import { Grid,CardMedia, Box, Typography, Button } from '@mui/material'
 import '../styles/Buttons.css';
 import NavBar from '../components/NavBar'
-
+import Loading from '../components/Loading'
 //import styles from "../styles/Paginado.module.css"
 console.log('url de ahora' ,window.location)
 export default function Home(){
@@ -164,7 +164,7 @@ export default function Home(){
                     </div>  
              
 
-            </div>:<div>Cargando...</div>}
+            </div>:<Loading/>}
         </div>
 
     )

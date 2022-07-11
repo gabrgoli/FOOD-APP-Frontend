@@ -72,12 +72,13 @@ export default function CardRecipe({  recipe }) { //FUNCION PRINCIPAL
         <IconButton onClick={ changeColor } style={{color: colorHeart}} aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
-        <IconButton aria-label="share" onClick={() => {navigator.clipboard.writeText(`${window.location.origin}/recipe/${recipe.id}`);swal({
-                title:"URL copiado",
-                text:"Se copio la dirección de la Receta en el portapapeles",
-                icon:"success",
-                button:"Aceptar"
-                }) }}>
+        <IconButton  
+          style={{color: 'black'}} 
+          aria-label="share" 
+          onClick={() => {
+            navigator.clipboard.writeText(`${window.location.origin}/recipe/${recipe.id}`);
+            swal({title:"URL copiado",text:"Se copio la dirección de la Receta en el portapapeles",icon:"success",button:"Aceptar"}) 
+          }}>
           <ShareIcon />
         </IconButton>
         <Tooltip title={'Health Score'}>
