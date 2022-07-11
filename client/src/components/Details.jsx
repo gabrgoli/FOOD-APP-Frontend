@@ -1,23 +1,33 @@
 import React from "react";
 import { Link , useParams} from "react-router-dom"
 import { useDispatch , useSelector } from "react-redux"
-import DietIcons from "./DietIcons.jsx";
+import DietIcons from "./IconDiet.jsx";
 import { useEffect , useState} from "react";
 import { getDetail } from "../actions";
 //import styles from "../Styles/DetailRecipe.module.css"
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import '../styles/Buttons.css';
 import NavBar from '../components/NavBar'
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import swal from 'sweetalert';
 
 export default function DetailRecipe(){ //FUNCION PRINCIPAL
     const dispatch = useDispatch()
     const recipeId = useParams()
     const detailRecipe = useSelector((state) => state.detail) //traigo del reducer
     const [loaded,setLoaded]=React.useState(false)
+    const [colorHeart, setColorHeart] = React.useState ('black');
 
     useEffect(() => {
         dispatch(getDetail(recipeId.id)).then(()=>setLoaded(true))// recipe.Id accedo al id de la url
     },[dispatch])
+
+    const changeColor = () => { 
+        if(colorHeart==="black"){setColorHeart("red")}
+        else{ setColorHeart("black")} 
+      }
 
 //console.log(detailRecipe);
 // console.log("url de ahora",window.location.pathname);
@@ -37,24 +47,40 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
                         <Box marginTop='200px' mb='100px' sx={{boxShadow:'rgba(0, 0, 0, 0.35) 0px 5px 15px;',display:'flex',justifyContent:'center',flexDirection:{xs:'column',md:'column'}, width:'70%',borderRadius:3,alignItems:'center'}}>
                             <h1 >{detailRecipe?.title}</h1> 
                             <img objectFit='contain' width = "100%"  src={detailRecipe?.image} alt="la imagen no se encuentra"/>
-           
+                            
+                                <Box display='flex' justifyContent='right' width='100%'>
+                                <IconButton  onClick={ changeColor } style={{color: colorHeart}}>
+                                <FavoriteIcon fontSize='small'/>
+                                </IconButton> 
+
+                                <IconButton aria-label="share" onClick={() => {navigator.clipboard.writeText(`${window.location.origin}/recipe/${detailRecipe.id}`);swal({
+                                title:"URL copiado",
+                                text:"Se copio la dirección de la Receta en el portapapeles",
+                                icon:"success",
+                                button:"Aceptar"
+                                }) }}>
+                                <ShareIcon />
+                                </IconButton>
+                                </Box>
+                            
+                            <Typography variant='h3'>Types of Diets:</Typography>
                             <Box display='flex' flexDirection='row' justifyContent='center'>{detailRecipe.diets?.map((diet)=>(<DietIcons title={diet.name}/>))}</Box>
-                            <h3 >Ingredients:</h3>
+                            <Typography variant='h3'>Ingredients:</Typography>
                             {detailRecipe.ingredients?.map((ingredient)=>{
-                               return <>{`${ ingredient.name[0].toUpperCase()}${ingredient.name.substring(1)} `}</>
+                               return <Typography variant='h5'>{`${ ingredient.name[0].toUpperCase()}${ingredient.name.substring(1)} `}</Typography>
                             })}
                                
-                            <h3 >Summary:</h3>
-                            <p >{detailRecipe?.summary}</p>                         
+                            <Typography variant='h3'>Summary:</Typography>
+                            <Typography variant='h5'>{detailRecipe?.summary}</Typography>                         
                             {/* <h3 >Puntuacion</h3>
                             <p >{detailRecipe?.puntuacion}</p> */}
-                            <h3 >Health Score</h3>
+                            <Typography variant='h3' >Health Score</Typography>
                             <h2><span class="blue">{detailRecipe?.healthScore}</span></h2>
 
                             
     
-                            <h3 >Instructions</h3>
-                            <p >{detailRecipe?.instructions}</p>
+                            <Typography variant='h3' >Instructions</Typography>
+                            <Typography variant='h5'>{detailRecipe?.instructions}</Typography>
                         </Box>
                     :
                     <Box mt="200px">Cargando...</Box>}

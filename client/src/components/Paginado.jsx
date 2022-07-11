@@ -12,6 +12,20 @@ export default function Paginado ({recipesPerPage,  allRecipes, paginado, curren
 
     return(
         <>
+
+            {/* PANTALLA CHICA */}
+            <Box margin={3} display='flex' justifyContent='center'>
+                <Grid container  sx={{display:{xs:'flex',md:'none'},justifyContent:{xs:'center',md:'none'}}}> 
+                    {pageNumber &&
+                            pageNumber.map(number => (
+                                <Grid key={number}    xs={1} sx={{display:{xs:'flex',md:'none'},justifyContent:'', marginX:'20px'}}>   
+                                    <Box key={number} display='flex' flexDirection='row'  className={currentPage===number?styles.barrasActivo:styles.barras} onClick = {()=> paginado (number)}>{number}</Box>       
+                                </Grid>
+                            ))
+                    }
+                </Grid>
+            </Box>
+
             {/* PANTALLA GRANDE */}
             <Box  display='flex' flexDirection='row' justifyContent='center' sx={{display:{xs:'none',md:'flex'}}}>
                 {pageNumber &&
@@ -21,16 +35,7 @@ export default function Paginado ({recipesPerPage,  allRecipes, paginado, curren
                 }
             </Box>
 
-            {/* PANTALLA CHICA */}
-                 <Grid container spacing={1}  sx={{display:{xs:'flex',md:'none'},justifyContent:{xs:'flex-start',md:'none'},mt:2}}> 
-                 {pageNumber &&
-                        pageNumber.map(number => (
-                            <Grid    xs={3} sx={{display:{xs:'flex',md:'none'},justifyContent:'center'}}>   
-                                <Box display='flex' flexDirection='row'  className={currentPage===number?styles.barrasActivo:styles.barras} onClick = {()=> paginado (number)}>{number}</Box>       
-                            </Grid>
-                        ))
-                }
-                 </Grid>
+
                     
         </>
     )

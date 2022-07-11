@@ -1,4 +1,6 @@
 import axios from "axios";
+import swal from 'sweetalert';
+
 export const api='http://localhost:3001'
 
 export function getRecipes() {
@@ -69,7 +71,12 @@ export function getTitleRecipes(name) {
       });
     } catch (error) {
       console.log(error);
-      alert("no se encuentra la receta")
+      swal({
+        title:"Error",
+        text:"The recipe was not found!",
+        icon:"error",
+        button:"Aceptar"
+      })
     }
   };
 }

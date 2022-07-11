@@ -3,7 +3,8 @@ import { useState,useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { getRecipes,filterCreated,getDiets ,filteredByDiet, orderByTitle,orderBySpoonacularScore} from '../actions';
 import { Link } from 'react-router-dom';
-import CardRecipe from './CardRecipe2.jsx';
+import CardRecipeSmall from './CardRecipeSmall.jsx';
+import CardRecipeBig from './CardRecipeBig.jsx';
 import Paginado from './Paginado';
 import { Grid,CardMedia, Box, Typography, Button } from '@mui/material'
 import '../styles/Buttons.css';
@@ -19,7 +20,7 @@ export default function Home(){
 
     //PAGINADO
     const [currentPage,setCurrentPage]=useState(1) //creo un estado local en donde le paso la pagina actual
-    const [recipesPerPage, setRecipesPerPage]=useState(28) //cantidad de recetas por pagina
+    const [recipesPerPage, setRecipesPerPage]=useState(20) //cantidad de recetas por pagina
     const indexOfLastRecipe = currentPage * recipesPerPage //porque si estoy en la pagina 3, el ultimo recipe va a ser 6*3=18
     const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage //da el index de la primera receta
     const currentRecipes = allRecipes.slice(indexOfFirstRecipe,indexOfLastRecipe) //va mostrando cuantos recipes hay que rednerizar por pagina
@@ -140,11 +141,17 @@ export default function Home(){
                 {
                 currentRecipes?.map(recipe => {
                     return (
-     
-                        <Grid key={recipe?.id}  md={3} sx={{display:'flex',justifyContent:'center'}}>          
-                                <CardRecipe key={recipe?.id} recipe={recipe}  diets={recipe?.diets} ></CardRecipe>
-                        </Grid>
-      
+                        <>
+                            {/* PANTALLA GRANDE */}
+                            <Grid  sx={{display:{xs:'flex',md:'none'},justifyContent:'center'}} >
+                                    <CardRecipeSmall  recipe={recipe}  ></CardRecipeSmall>
+                            </Grid>
+
+                            {/* PANTALLA CHICA */}
+                            <Grid   md={3} sx={{display:{xs:'none',md:'flex'},justifyContent:'center'}} >
+                                    <CardRecipeBig  recipe={recipe} ></CardRecipeBig>
+                            </Grid>
+                        </>
                         )
                     })
                 }
