@@ -1,12 +1,12 @@
 import axios from "axios";
 import swal from 'sweetalert';
-
 export const api='http://localhost:3001'
+//export const api='https://food-app-recetas.herokuapp.com'
 
 export function getRecipes() {
   return async function (dispatch) {
     console.log("hola que tal");
-    var json = await axios.get(`http://localhost:3001/recipes`);
+    var json = await axios.get(`${api}/recipes`);
     console.log("axios");
     return dispatch({
       type: "GET_RECIPES",
@@ -18,7 +18,7 @@ export function getRecipes() {
 export function getDiets() {
   return async function (dispatch) {
     // try {
-    var json = await axios.get(`http://localhost:3001/types`);
+    var json = await axios.get(`${api}/types`);
     return dispatch({
       type: "GET_DIETS_TYPES",
       payload: json.data,
