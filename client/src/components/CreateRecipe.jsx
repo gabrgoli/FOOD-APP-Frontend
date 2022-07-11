@@ -129,7 +129,7 @@ export default function RecipeCreate(){
                 button:"Aceptar"
               })
         } 
-
+        e.preventDefault()
             const newPost={...post,image:images[0]?images[0]:"https://res.cloudinary.com/dnlooxokf/image/upload/v1654057815/images/pzhs1ykafhvxlhabq2gt.jpg"}
 
             dispatch(postRecipe(newPost)).then(async(r)=>{
