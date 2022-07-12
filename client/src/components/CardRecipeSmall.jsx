@@ -27,6 +27,13 @@ export default function CardRecipe({ recipe }){
   }
 
   const navigate=useNavigate()
+
+// FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
+let arrayDietaNoRepeatElement = recipe.diets.filter((dieta,index)=>{
+  return recipe.diets.indexOf(dieta) === index;
+})
+
+
   return (
     < >
       <Box sx={{display:'flex',flexDirection:'row',bgcolor:'#D3CBC9',width:'100%',height:'40vw',marginY:2,boxShadow:'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;', border:'1px solid rgb(1,40,83)'}}> 
@@ -56,7 +63,7 @@ export default function CardRecipe({ recipe }){
 
               <Box  sx={{width:'100%',display:'flex',flexDirection:'row'}}>   
                     <IconButton>
-                        {recipe.diets.map((diet)=>(<IconDiet title={diet.name}/>))}
+                        {arrayDietaNoRepeatElement.map((diet)=>(<IconDiet title={diet.name}/>))}
                     </IconButton>
                     <Box display='flex' justifyContent='right' width='100%'>
                       

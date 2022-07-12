@@ -30,6 +30,13 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
         else{ setColorHeart("black")} 
       }
 
+
+  // FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
+  let arrayDietaNoRepeatElement = detailRecipe.diets.filter((dieta,index)=>{
+    return detailRecipe.diets.indexOf(dieta) === index;
+  })
+
+
 console.log(detailRecipe);
 // console.log("url de ahora",window.location.pathname);
 // console.log(recipeId.id);
@@ -65,7 +72,7 @@ console.log(detailRecipe);
                                 </Box>
                             
                             <Typography variant='h3'>Types of Diets:</Typography>
-                            <Box display='flex' flexDirection='row' justifyContent='center'>{detailRecipe.diets?.map((diet)=>(<DietIcons title={diet.name}/>))}</Box>
+                            <Box display='flex' flexDirection='row' justifyContent='center'>{arrayDietaNoRepeatElement?.map((diet)=>(<DietIcons title={diet.name}/>))}</Box>
                             <Typography variant='h3'>{detailRecipe.ingredients && 'Ingredients:'}</Typography>
                             {detailRecipe.ingredients?.map((ingredient)=>{
                                return <Typography variant='h5'>{`${ ingredient.name[0].toUpperCase()}${ingredient.name.substring(1)} `}</Typography>

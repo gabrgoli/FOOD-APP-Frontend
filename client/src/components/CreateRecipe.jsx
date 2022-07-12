@@ -140,6 +140,12 @@ export default function RecipeCreate(){
             })
         }
 
+
+// FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
+let arrayDietaNoRepeatElement = allDiets.filter((dieta,index)=>{
+    return allDiets.indexOf(dieta) === index;
+  })
+
     return(
         
     <Box display='fllex' justifyContent='center'  marginTop='250px'>
@@ -235,7 +241,7 @@ export default function RecipeCreate(){
                 <div >
                     <select onChange={(e)=> handleSelectDiets(e)}>
                         <option value="all" hidden name="diets" >Selecciona tipo de dieta</option>
-                            {allDiets?.map(diet => {
+                            {arrayDietaNoRepeatElement?.map(diet => {
                             return ( <option value={diet.id} key={diet.id}>{diet.name[0].toUpperCase()+diet.name.substring(1)}</option>)
                             })
                             } 
