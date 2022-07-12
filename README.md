@@ -31,7 +31,15 @@ El deploy del back se realizo en Heroku.
 El deploy del front se realizó en Versel.
 Haciendo un GIT push al main de cada uno, el deploy se actualiza automaticamente.
 
-Los archivos ya estan configurados para poder usasrse en forma local.
+# COMO UTILIZAR EL PROYTECTO
+Bajar las 2 carpetas, del Front y del Back.
+En la del front, en el archivo actions hay que vamciar la variable api por 'http://localhost:3001', para que
+tome como backend al servidor local que se levanta desde el archivo del backend.
+
+Para levantar el servidor desde el archivo del Backend, desde la carpeta src, se coloca el comando npm start.
+Para levantar el Frontend, desde la carpeta client, se coloca el comando nom start.
+
+
 
 
 
