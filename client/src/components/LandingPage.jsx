@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom'
 import '../styles/Buttons.css';
 
 export default function LandingPage(){
+
+    console.log("api",process.env.URL_ORIGIN)
     return(
         <div>
             <h1> Bienvenidos a la aplicación de recetas de cocina </h1>
