@@ -30,7 +30,7 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
         else{ setColorHeart("black")} 
       }
 
-//console.log(detailRecipe);
+console.log(detailRecipe);
 // console.log("url de ahora",window.location.pathname);
 // console.log(recipeId.id);
  console.log("detailRecipe",detailRecipe);
@@ -78,10 +78,11 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
                             <Typography variant='h3' >Health Score</Typography>
                             <h2><span class="blue">{detailRecipe?.healthScore}</span></h2>
 
-                            
-    
                             <Typography variant='h3' >Instructions</Typography>
-                            <Typography variant='h5'>{detailRecipe?.instructions}</Typography>
+                            {detailRecipe.instructions.map((instruction)=>(
+                                <Typography variant='h5'>{instruction}</Typography>
+                            ))
+                        }
                         </Box>
                     :
                     <Loading/>}
