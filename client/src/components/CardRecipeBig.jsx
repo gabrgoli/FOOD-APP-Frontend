@@ -99,7 +99,7 @@ export default function CardRecipe({  recipe }) { //FUNCION PRINCIPAL
         <Typography paragraph>
             <h3 >Ingredients:</h3>
             {recipe.ingredients?.map((ingredient)=>{
-              //  return <>{`${ ingredient?.name[0].toUpperCase()}${ingredient?.name.substring(1)} `}</>
+                return <>{`${ ingredient?.name[0].toUpperCase()}${ingredient?.name.substring(1)} `}</>
             })}
           </Typography>
 
