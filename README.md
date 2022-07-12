@@ -14,7 +14,7 @@ La base de datos se carga utilizando los datos de una API llamada Spoonacular.
 
 La aplicacion tiene las siguientes funcionalidades.
 * Listado de mas de 200 recetas de comida
-* Es responsiba, se puede visualizar por celular o PC.
+* Es responsiva, se puede visualizar por celular o PC.
 * Filtrar las recetas por el tipo de receta que el usuario quiera verificar.
 * Bucador por nombre de receta
 * Ordenar recetas según una calificación saludable.
