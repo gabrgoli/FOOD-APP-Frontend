@@ -27,7 +27,7 @@ export function getDiets() {
       payload: json.data,
     });
     // } catch (error) {
-    //     consppole.log(e+rror)
+    //     console.log(error)
     // }
   };
 }

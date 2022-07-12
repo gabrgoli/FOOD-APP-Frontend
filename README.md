@@ -31,7 +31,7 @@ El deploy del back se realizo en Heroku.
 El deploy del front se realizó en Versel.
 Haciendo un GIT push al main de cada uno, el deploy se actualiza automaticamente.
 
-En caso de queres utilizar los archivos de forma local, solamente debo cambiar en el FRONT el valor de la URL a localHost:3001
+Los archivos ya estan configurados para poder usasrse en forma local.
 
 
 
