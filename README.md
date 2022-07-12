@@ -12,11 +12,11 @@ Food APP es una aplicación creada con ReactJS para el FRONTEND y NodeJS y Expre
 Se utiliza una base de datos en Postgress Sequelize.
 La base de datos se carga utilizando los datos de una API llamada Spoonacular.
 
-La aplicacion tiene las siguientes funcionalidades.
+La aplicación tiene las siguientes funcionalidades.
 * Listado de mas de 200 recetas de comida
 * Es responsiva, se puede visualizar por celular o PC.
 * Filtrar las recetas por el tipo de receta que el usuario quiera verificar.
-* Bucador por nombre de receta
+* Buscador por nombre de receta
 * Ordenar recetas según una calificación saludable.
 * Cada Receta presenta su modo de preparación y los ingredientes que se deben utiizar. 
 * Icono de compartir receta
@@ -39,6 +39,24 @@ tome como backend al servidor local que se levanta desde el archivo del backend.
 Para levantar el servidor desde el archivo del Backend, desde la carpeta src, se coloca el comando npm start.
 Para levantar el Frontend, desde la carpeta client, se coloca el comando nom start.
 
+Para Guardar los datos de la api en la BDD, hay que configurar la variable let guardarApiEnBDD=false; que estan en routes/index.js y colocarla en true guardarApiEnBDD=false;
+
+Hay que elegir en que base de datos se guardan o se usan los datos una vez guardados.
+Para ello hay que modificar el archvio db.js
+
+
+Si se usa la base de datos local, no la que esta en heroku, entonces hay que modificar en el archivo db.js, boorrar lo siguiente:
+dialectOptions:{
+      ssl:{
+        require:true,
+        rejectUnauthorized:false
+      }
+    }
+    
+
+Otra cosa importante que hice,  fue cargar el .env en github para lograr cargar la BDD en heroku
+
+Otra cosa importante que hice,  fue cargar el .env en github
 
 
 
