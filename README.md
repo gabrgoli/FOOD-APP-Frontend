@@ -59,6 +59,13 @@ Por defecto va a utilizar la base de datos que esta en la nube en heroku.
 * Deploy nuevamente del backend
 * Listo, el programa deberia funcionar
 
+Este es el error que muestra
+react_devtools_backend.js:4026 TypeError: Cannot read properties of undefined (reading '0')
+CardRecipeBig.jsx:111 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading '0')
+    at Array.map (<anonymous>)
+    at Y (CardRecipeBig.jsx:110:35)
+    at ci (react-dom.production.min.js:157:137)
+
 # nota, sobre si se quiere usar la Base de datos POSTRGESS Pg Admin Local
 Si se usa la base de datos local, no la que esta en heroku, entonces hay que modificar en el archivo db.js, boorrar lo siguiente:
 dialectOptions:{

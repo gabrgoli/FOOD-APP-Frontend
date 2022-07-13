@@ -21,7 +21,7 @@ export default function IconsDiets ({title, size}){
     return(
         <Box display='flex' flexDirection='column'>
             <Box >
-                <Tooltip title={title}>
+                <Tooltip title={title[0].toUpperCase()+title.substring(1)}>
                 <CardMedia
                     component="img"
                     height={window.location.pathname==='/home'?"20":"85"}
