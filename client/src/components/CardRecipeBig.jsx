@@ -44,6 +44,16 @@ export default function CardRecipe({  recipe }) { //FUNCION PRINCIPAL
     else{ setColorHeart("black")} 
   }
 
+// PARA NO REPETIR LAS DIETAS 
+let arrayDietsNoRepeat=[]
+
+  recipe.diets?.forEach((diet) =>{
+      if (!arrayDietsNoRepeat.includes(diet.name)) {
+        arrayDietsNoRepeat.push(diet.name);
+      }
+    }
+  );
+
 
   return (
     <div className='Card'>
@@ -60,7 +70,7 @@ export default function CardRecipe({  recipe }) { //FUNCION PRINCIPAL
         image={recipe?.image}
         alt="Food"
       />
-      <Box display='flex' flexDirection='row' justifyContent='center' margin='8px'>{recipe.diets.map((diet)=>(<IconDiet title={diet.name}/>))}</Box>
+      <Box display='flex' flexDirection='row' justifyContent='center' margin='8px'>{arrayDietsNoRepeat.map((diet)=>(<IconDiet title={diet}/>))}</Box>
       </Link>
       <CardContent>
         <Typography variant="h6" color="text.secondary">

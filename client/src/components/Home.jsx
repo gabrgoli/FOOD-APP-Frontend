@@ -91,6 +91,33 @@ export default function Home(){
     console.log("url",window.location)
 
 
+      // FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
+  /*let arrayNoRepeatElement = allDiets.filter((recipe,index)=>{
+    return allDiets.indexOf(recipe) === index;
+  })*/
+
+//   function noRepeatDiets (arrayDiets){
+//     let array = arrayDiets
+//     let repeticiones = 0
+//     arrayDiets.forEach((diet)=>{
+//         array.forEach((diet2,i)=>{
+//             if(diet.name===diet2.name){
+//                 repeticiones=repeticiones+1;
+//                 if(repeticiones===2){
+//                     array.splice(i,1)
+//                 }
+//             }    
+//         })
+//         repeticiones=0;
+//   }) 
+//     return array
+//   }
+
+//   let arrayNoRepeatElement=noRepeatDiets(allDiets)
+
+
+  console.log("arrayDietsShow",allDiets)
+
     return(//se pasan los values iguales a la API
         <div>
             <NavBar />
