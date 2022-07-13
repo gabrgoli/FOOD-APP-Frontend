@@ -89,7 +89,7 @@ console.log(detailRecipe);
                             <h2><span class="blue">{detailRecipe?.healthScore}</span></h2>
 
                             <Typography variant='h3' >Instructions</Typography>
-                            {detailRecipe.instructions.map((instruction)=>(
+                            {detailRecipe.instructions?.map((instruction)=>(
                                 <Typography variant='h5'>{instruction}</Typography>
                             ))
                         }
