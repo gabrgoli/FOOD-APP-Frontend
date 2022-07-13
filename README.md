@@ -33,18 +33,29 @@ Haciendo un GIT push al main de cada uno, el deploy se actualiza automaticamente
 
 # COMO UTILIZAR EL PROYTECTO
 Bajar las 2 carpetas, del Front y del Back.
-En la del front, en el archivo actions hay que vamciar la variable api por 'http://localhost:3001', para que
+En la del front, en el archivo actions hay que cambiar la variable api por 'http://localhost:3001', para que
 tome como backend al servidor local que se levanta desde el archivo del backend.
 
 Para levantar el servidor desde el archivo del Backend, desde la carpeta src, se coloca el comando npm start.
 Para levantar el Frontend, desde la carpeta client, se coloca el comando nom start.
+Por defecto va a utilizar la base de datos que esta en la nube en heroku.
 
-Para Guardar los datos de la api en la BDD, hay que configurar la variable let guardarApiEnBDD=false; que estan en routes/index.js y colocarla en true guardarApiEnBDD=false;
+# GUARDAR DATOS DE API EN LA BDD DE HEROKU
+* Utilizar por las dudas el archivo .env en el repositorio del backend, para que tome el API_KEY de spoonacular.
+* Vamos a configurar el Backend, para que tome la BDD quue esta en HEROKU (ya esta configurado asi).
+* La variable let guardarApiEnBDD=false; que estan en routes/index.js colocarla en true, guardarApiEnBDD=true.
+* Verificar que en actions, en el Frontend, la variable api, apunte a la direccion del Backend que brinda Heroku al deployar.
+* En el archivo app.js del Backend, verificar que se direcciona a la web del FRONT que nos brinda Vercel. Verificar la variable de estado CORS_URL
+* Se realiza un Push al main del front y del backend.
+* En heroku deploy del back
+* en Vercel deploy del Front
+* Una vez que se realizaron los deploy, entro a la URL que me brindo Vercel y que coloque en CORS_URL
+* Al entrar a la seccion /home se realizara la carga a la base de datos y luego el programa se rompe porque no puede leer una propiedad. No importa porque los datos ya estaran cargados en la Base de datos.
+* Cambiar la variable guardarApiEnBDD por false y realizar un push al main de nuevo.
+* Deploy nuevamente del backend
+* Listo, el programa deberia funcionar
 
-Hay que elegir en que base de datos se guardan o se usan los datos una vez guardados.
-Para ello hay que modificar el archvio db.js
-
-
+# nota, sobre si se quiere usar la Base de datos POSTRGESS Pg Admin Local
 Si se usa la base de datos local, no la que esta en heroku, entonces hay que modificar en el archivo db.js, boorrar lo siguiente:
 dialectOptions:{
       ssl:{
@@ -52,18 +63,6 @@ dialectOptions:{
         rejectUnauthorized:false
       }
     }
-    
-
-Otra cosa importante que hice,  fue cargar el .env en github para lograr cargar la BDD en heroku
-
-Otra cosa importante que hice,  fue cargar el .env en github
-
-
-
-
-
-
-
 
 ## ENUNCIADO DE HENRY
 
