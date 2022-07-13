@@ -53,8 +53,8 @@ Por defecto va a utilizar la base de datos que esta en la nube en heroku.
 * Se realiza un Push al main del front y del backend.
 * En heroku deploy del back
 * en Vercel deploy del Front
-* Una vez que se realizaron los deploy, entro a la URL que me brindo Vercel y que coloque en CORS_URL
-* Al entrar a la seccion /home se realizara la carga a la base de datos y luego el programa se rompe porque no puede leer una propiedad. No importa porque los datos ya estaran cargados en la Base de datos.
+* Una vez que se realizaron los deploy, entro a la URL que me brindo Vercel para el front y lo coloco en CORS_URL, en las variables de entorno de Heroku, desde settings.
+* Al comenzar con la app, se dirige al landing, el cual lleca al home, /home, desde alli se realizara la carga a la base de datos automaticamente y luego el programa se rompe porque no puede leer una propiedad. No importa porque los datos ya estaran cargados en la Base de datos.
 * Cambiar la variable guardarApiEnBDD por false y realizar un push al main de nuevo.
 * Deploy nuevamente del backend
 * Listo, el programa deberia funcionar

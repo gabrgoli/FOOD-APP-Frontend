@@ -1,10 +1,11 @@
 import axios from "axios";
 import swal from 'sweetalert';
 //export const api='http://localhost:3001'
+//export const api='https://foodapp-b.herokuapp.com'
  //export const { URL_ORIGIN } = process.env;
- export const api='https://foodapp-b.herokuapp.com'
  //export const api=process.env.URL_ORIGIN||'http://localhost:3001';
-
+ export const api='https://food-app-ba.herokuapp.com'
+ 
 export function getRecipes() {
   return async function (dispatch) {
     console.log("hola que tal");
