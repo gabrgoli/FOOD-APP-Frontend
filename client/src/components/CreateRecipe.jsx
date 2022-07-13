@@ -142,8 +142,8 @@ export default function RecipeCreate(){
 
 
 // FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
-let arrayDietaNoRepeatElement = allDiets.filter((dieta,index)=>{
-    return allDiets.indexOf(dieta) === index;
+let arrayDietaNoRepeatElement = allDiets?.filter((dieta,index)=>{
+    return allDiets?.indexOf(dieta) === index;
   })
 
     return(

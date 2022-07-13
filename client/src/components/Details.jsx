@@ -32,8 +32,8 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
 
 
   // FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
-  let arrayDietaNoRepeatElement = detailRecipe.diets.filter((dieta,index)=>{
-    return detailRecipe.diets.indexOf(dieta) === index;
+  let arrayDietaNoRepeatElement = detailRecipe.diets?.filter((dieta,index)=>{
+    return detailRecipe.diets?.indexOf(dieta) === index;
   })
 
 

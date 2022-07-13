@@ -29,8 +29,8 @@ export default function CardRecipe({ recipe }){
   const navigate=useNavigate()
 
 // FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
-let arrayDietaNoRepeatElement = recipe.diets.filter((dieta,index)=>{
-  return recipe.diets.indexOf(dieta) === index;
+let arrayDietaNoRepeatElement = recipe.diets?.filter((dieta,index)=>{
+  return recipe.diets?.indexOf(dieta) === index;
 })
 
 

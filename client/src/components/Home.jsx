@@ -91,14 +91,6 @@ export default function Home(){
     console.log("url",window.location)
 
 
-  // FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
-  let arrayDietaNoRepeatElement = allDiets.filter((dieta,index)=>{
-    return allDiets.indexOf(dieta) === index;
-  })
-
-
-
-
     return(//se pasan los values iguales a la API
         <div>
             <NavBar />
@@ -125,7 +117,7 @@ export default function Home(){
                 </select> */}
                 <select className="select-css"  onChange={e => handleFilteredDiet(e)}>
                     <option value="all">Filter by tipe of diet</option>
-                    {arrayDietaNoRepeatElement?.map(diet => {
+                    {allDiets?.map(diet => {
                         return ( <option value={diet.name}>{diet.name[0].toUpperCase()+diet.name.substring(1)}</option>)
                     })
                 }
