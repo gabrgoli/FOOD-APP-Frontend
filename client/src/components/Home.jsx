@@ -11,8 +11,7 @@ import '../styles/Buttons.css';
 import NavBar from '../components/NavBar'
 import Loading from '../components/Loading'
 //import styles from "../styles/Paginado.module.css"
-console.log('url de ahora' ,window.location)
-
+//console.log('url de ahora' ,window.location)
 
 export default function Home(){
 
@@ -137,16 +136,17 @@ export default function Home(){
                 <Grid container   sx={{display:{md:'flex'},justifyContent:{xs:'space-around',md:'flex-start'},mt:2}}> 
                 {
                 currentRecipes?.map(recipe => {
+                    
                     return (
                         <>
                             {/* PANTALLA GRANDE */}
                             <Grid  sx={{display:{xs:'flex',md:'none'},justifyContent:'center'}} >
-                                    <CardRecipeSmall  recipe={recipe}  ></CardRecipeSmall>
+                                    <CardRecipeSmall  recipe={recipe}/>
                             </Grid>
 
                             {/* PANTALLA CHICA */}
                             <Grid   md={3} sx={{display:{xs:'none',md:'flex'},justifyContent:'center'}} >
-                                    <CardRecipeBig  recipe={recipe} ></CardRecipeBig>
+                                    <CardRecipeBig  recipe={recipe} />
                             </Grid>
                         </>
                         )

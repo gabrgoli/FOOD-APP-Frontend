@@ -1,7 +1,7 @@
 import axios from "axios";
 import swal from 'sweetalert';
-//export const api='https://food-app-ba.herokuapp.com'
-export const api='http://localhost:3001'
+export const api='https://food-app-ba.herokuapp.com'
+//export const api='http://localhost:3001'
  //export const { URL_ORIGIN } = process.env;
  //export const api=process.env.URL_ORIGIN||'http://localhost:3001';
  
