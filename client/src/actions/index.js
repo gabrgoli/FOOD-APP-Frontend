@@ -1,5 +1,8 @@
+
 import axios from "axios";
 import swal from 'sweetalert';
+import dotenv from 'dotenv'
+dotenv.config();
 
 const { REACT_APP_LOCAL_HOST } = process.env;
 
@@ -7,7 +10,7 @@ const apiLocal = 'http://localhost:3001'
 const apiRemote= 'https://food-app-ba.herokuapp.com'
  
 //export const api = apiLocal
-export const api = REACT_APP_LOCAL_HOST && apiRemote
+export const api = REACT_APP_LOCAL_HOST? REACT_APP_LOCAL_HOST : apiRemote
  
 export function getRecipes() {
   return async function (dispatch) {
