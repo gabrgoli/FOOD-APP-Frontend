@@ -19,6 +19,7 @@ import IconDiet from './IconDiet.jsx'
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { favorite } from '../actions';
+import { useDispatch } from 'react-redux';
 
 // ESTA FUNCION VIENE CON MUI MATERIAL DEBIDO A LA CARD ESPECIAL QUE SE DESPLIEGA
 const ExpandMore = styled((props) => {
@@ -34,19 +35,35 @@ const ExpandMore = styled((props) => {
 
 export default function CardRecipe({  recipe }) { //FUNCION PRINCIPAL
   const [expanded, setExpanded] = React.useState(false);
-  
+  const dispatch=useDispatch()
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const [colorHeart, setColorHeart] = React.useState (recipe.favorite?'red':'black');
- 
-  let changeColor = () => { 
 
-    if(colorHeart==="black"){setColorHeart("red")}
-    else{ setColorHeart("black")} 
+////////////////////////////////////// FAVORITOS START ///////////////////
+  const [recipeState, setRecipeState] = React.useState()
+  // CARGO LOS VALORES DE recipe EN EL ESTADO recipeState
+  React.useEffect(()=>setRecipeState(()=>(recipe)),[recipe])
+
+  const changeColor =  () => { 
+      let newPost
+      if(recipeState.favorite===false){
+          newPost={...recipeState,favorite:true}
+          setRecipeState(()=>({...recipeState,favorite:true}))
+          dispatch(favorite(newPost));
+      }
+      else{ 
+          newPost={...recipeState,favorite:false}
+          setRecipeState(()=>({...recipeState,favorite:false}))
+          dispatch(favorite(newPost));
+      } 
   }
+//__________________________________FAVORITOS END ___________________//
+
+
+
 
 // PARA NO REPETIR LAS DIETAS 
 let arrayDietsNoRepeat=[]
@@ -82,7 +99,7 @@ let arrayDietsNoRepeat=[]
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton onClick={ changeColor } style={{color: colorHeart}} aria-label="add to favorites">
+        <IconButton onClick={ changeColor } style={{color: recipeState?.favorite?'red':'black'}}>
           <FavoriteIcon />
         </IconButton>
         <IconButton  

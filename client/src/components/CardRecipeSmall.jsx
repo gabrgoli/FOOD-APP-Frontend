@@ -19,18 +19,33 @@ import ShareIcon from '@mui/icons-material/Share';
 import swal from 'sweetalert';
 import IconDiet from './IconDiet.jsx'
 import { favorite } from '../actions';
-
+import { useDispatch } from 'react-redux';
 
 export default function CardRecipe({ recipe }){
-  const [colorHeart, setColorHeart] = React.useState ('black');
 
-  const changeColor = () => { 
-    if(colorHeart==="black"){setColorHeart("red")}
-    else{ setColorHeart("black")} 
-  }
-
+  const dispatch=useDispatch()
   const navigate=useNavigate()
 
+
+  ////////////////////////////////////// FAVORITOS START ///////////////////
+  const [recipeState, setRecipeState] = React.useState()
+  // CARGO LOS VALORES DE recipe EN EL ESTADO recipeState
+  React.useEffect(()=>setRecipeState(()=>(recipe)),[recipe])
+
+  const changeColor =  () => { 
+      let newPost
+      if(recipeState.favorite===false){
+          newPost={...recipeState,favorite:true}
+          setRecipeState(()=>({...recipeState,favorite:true}))
+          dispatch(favorite(newPost));
+      }
+      else{ 
+          newPost={...recipeState,favorite:false}
+          setRecipeState(()=>({...recipeState,favorite:false}))
+          dispatch(favorite(newPost));
+      } 
+  }
+//__________________________________FAVORITOS END ___________________//
 
 // PARA NO REPETIR LAS DIETAS 
 let arrayDietsNoRepeat=[]
@@ -75,7 +90,7 @@ let arrayDietsNoRepeat=[]
                     </IconButton>
                     <Box display='flex' justifyContent='right' width='100%'>
                       
-                      <IconButton  onClick={ changeColor } style={{color: colorHeart}}>
+                      <IconButton  onClick={ changeColor } style={{color: recipeState?.favorite?'red':'black'}}>
                         <FavoriteIcon fontSize='small'/>
                       </IconButton> 
 
