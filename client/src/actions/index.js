@@ -3,11 +3,12 @@ import swal from 'sweetalert';
 //export const api='https://food-app-ba.herokuapp.com'
  //export const { URL_ORIGIN } = process.env;
  //export const api=process.env.URL_ORIGIN||'http://localhost:3001';
+ const { REACT_APP_URL_ORIGIN } = process.env;
 
 const apiLocal = 'http://localhost:3001'
 const apiRemote= 'https://food-app-ba.herokuapp.com'
  
-export const api=process.env.REACT_APP_URL_ORIGIN && apiLocal
+export const api = REACT_APP_URL_ORIGIN && apiLocal
  
 export function getRecipes() {
   return async function (dispatch) {
