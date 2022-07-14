@@ -12,6 +12,8 @@ import NavBar from '../components/NavBar'
 import Loading from '../components/Loading'
 //import styles from "../styles/Paginado.module.css"
 console.log('url de ahora' ,window.location)
+
+
 export default function Home(){
 
     const dispatch = useDispatch()
@@ -52,13 +54,6 @@ export default function Home(){
         setLoaded(true);
     }
 
-
-    /*function handleFilterCreated(e){
-        setLoaded(false);
-        dispatch(filterCreated(e.target.value));
-        setLoaded(true)
-    }*/
-
     function handleFilteredDiet (e){
         setLoaded(false);
         dispatch(filteredByDiet(e.target.value));
@@ -84,39 +79,12 @@ export default function Home(){
         setCurrentPage(1);//setea la pagina principal
         forzarRenderizado(e.target.value) //renderiza modificando el estado local, ordenado de tal forma, solo hace la modificacion en el renderizado
         //setorder('Ordenado ${e.target.value}')
-
         //guarda el valor d el criterio actual, max min o all, y verifica si hubo un cambio de valor y compara con el estado actual, si es diferente renderiza
     }
+
     console.log('allRecipes',allRecipes)
     console.log("url",window.location)
-
-
-      // FUNCION QUE ELIMINAR LOS ELEMNTOS REPETIDOS
-  /*let arrayNoRepeatElement = allDiets.filter((recipe,index)=>{
-    return allDiets.indexOf(recipe) === index;
-  })*/
-
-//   function noRepeatDiets (arrayDiets){
-//     let array = arrayDiets
-//     let repeticiones = 0
-//     arrayDiets.forEach((diet)=>{
-//         array.forEach((diet2,i)=>{
-//             if(diet.name===diet2.name){
-//                 repeticiones=repeticiones+1;
-//                 if(repeticiones===2){
-//                     array.splice(i,1)
-//                 }
-//             }    
-//         })
-//         repeticiones=0;
-//   }) 
-//     return array
-//   }
-
-//   let arrayNoRepeatElement=noRepeatDiets(allDiets)
-
-
-  console.log("arrayDietsShow",allDiets)
+    console.log("arrayDietsShow",allDiets)
 
     return(//se pasan los values iguales a la API
         <div>

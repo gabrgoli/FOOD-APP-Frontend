@@ -18,6 +18,9 @@ import { useNavigate } from 'react-router-dom';
 import ShareIcon from '@mui/icons-material/Share';
 import swal from 'sweetalert';
 import IconDiet from './IconDiet.jsx'
+import { favorite } from '../actions';
+
+
 export default function CardRecipe({ recipe }){
   const [colorHeart, setColorHeart] = React.useState ('black');
 

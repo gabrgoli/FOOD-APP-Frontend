@@ -4,7 +4,7 @@ const initialState = {
   copyRecipes: [],
   dietTypes: [],
   alerta:[],
-  detail:[]
+  detail:[],
 };
 
 function rootReducer(state = initialState, action) {
@@ -39,18 +39,16 @@ function rootReducer(state = initialState, action) {
       };
 
     case "SEARCH_RECIPE":
-
         return {
           ...state,
           recipes: action.payload,
         };
       
-    
-
     case "POST_RECIPE":
       return {
         ...state,
       };
+
     case "ORDER_BY_SPOONACULAR_SCORE":
       const sortedRecipesSpoonScore =
         action.payload === "SpoonacularMax"

@@ -3,7 +3,7 @@ import { Link , useParams} from "react-router-dom"
 import { useDispatch , useSelector } from "react-redux"
 import DietIcons from "./IconDiet.jsx";
 import { useEffect , useState} from "react";
-import { getDetail } from "../actions";
+import { getDetail,favorite } from "../actions";
 //import styles from "../Styles/DetailRecipe.module.css"
 import { Box, Typography } from '@mui/material'
 import '../styles/Buttons.css';
@@ -19,16 +19,33 @@ export default function DetailRecipe(){ //FUNCION PRINCIPAL
     const recipeId = useParams()
     const detailRecipe = useSelector((state) => state.detail) //traigo del reducer
     const [loaded,setLoaded]=React.useState(false)
-    const [colorHeart, setColorHeart] = React.useState ('black');
 
     useEffect(() => {
         dispatch(getDetail(recipeId.id)).then(()=>setLoaded(true))// recipe.Id accedo al id de la url
     },[dispatch])
 
-    const changeColor = () => { 
-        if(colorHeart==="black"){setColorHeart("red")}
-        else{ setColorHeart("black")} 
-      }
+    const [recipeState, setRecipeState] = useState()
+
+    // CARGO LOS VALORES DE detailRecipe EN EL ESTADO recipeState
+    React.useEffect(()=>setRecipeState(()=>(detailRecipe)),[detailRecipe])
+    console.log("recipeState",recipeState)
+    
+
+    const changeColor =  () => { 
+        let newPost
+        if(recipeState.favorite===false){
+            newPost={...recipeState,favorite:true}
+            setRecipeState(()=>({...recipeState,favorite:true}))
+            dispatch(favorite(newPost));
+        }
+        else{ 
+
+            newPost={...recipeState,favorite:false}
+            setRecipeState(()=>({...recipeState,favorite:false}))
+            dispatch(favorite(newPost));
+        } 
+        //console.log("newPost",newPost)
+    }
 
   // PARA NO REPETIR LAS DIETAS 
     let arrayDietsNoRepeat=[]
@@ -60,7 +77,7 @@ console.log(detailRecipe);
                             <img objectFit='contain' width = "100%"  src={detailRecipe?.image} alt="la imagen no se encuentra"/>
                             
                                 <Box display='flex' justifyContent='right' width='100%'>
-                                <IconButton  onClick={ changeColor } style={{color: colorHeart}}>
+                                <IconButton  onClick={ changeColor } style={{color: recipeState.favorite?'red':'black'}}>
                                 <FavoriteIcon fontSize='small'/>
                                 </IconButton> 
 

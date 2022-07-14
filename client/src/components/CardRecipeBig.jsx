@@ -18,7 +18,9 @@ import { Grid, Box, Divider, Tooltip } from '@mui/material'
 import IconDiet from './IconDiet.jsx'
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import { favorite } from '../actions';
 
+// ESTA FUNCION VIENE CON MUI MATERIAL DEBIDO A LA CARD ESPECIAL QUE SE DESPLIEGA
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -32,14 +34,16 @@ const ExpandMore = styled((props) => {
 
 export default function CardRecipe({  recipe }) { //FUNCION PRINCIPAL
   const [expanded, setExpanded] = React.useState(false);
+  
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const [colorHeart, setColorHeart] = React.useState ('black');
+  const [colorHeart, setColorHeart] = React.useState (recipe.favorite?'red':'black');
  
-  const changeColor = () => { 
+  let changeColor = () => { 
+
     if(colorHeart==="black"){setColorHeart("red")}
     else{ setColorHeart("black")} 
   }
