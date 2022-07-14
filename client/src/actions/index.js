@@ -3,12 +3,15 @@ import swal from 'sweetalert';
 //export const api='https://food-app-ba.herokuapp.com'
  //export const { URL_ORIGIN } = process.env;
  //export const api=process.env.URL_ORIGIN||'http://localhost:3001';
- const { VERCEL } = process.env;
+ //const { VERCEL } = process.env;
 
 const apiLocal = 'http://localhost:3001'
 const apiRemote= 'https://food-app-ba.herokuapp.com'
  
-export const api = VERCEL? apiRemote : apiLocal
+//export const api = VERCEL? apiRemote : apiLocal
+
+//export const api = apiLocal
+export const api = apiRemote 
  
 export function getRecipes() {
   return async function (dispatch) {
